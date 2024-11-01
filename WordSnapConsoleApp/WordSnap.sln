@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordSnapConsoleApp", "WordSnapConsoleApp\WordSnapConsoleApp.csproj", "{76AB254F-5D6B-4C07-A8D2-ECC80154331E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordSnapConsoleApp", "WordSnapConsoleApp\WordSnapConsoleApp.csproj", "{76AB254F-5D6B-4C07-A8D2-ECC80154331E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordSnapWPFApp", "WordSnapWPFApp\WordSnapWPFApp.csproj", "{DF0799ED-7CD7-4D66-8A54-E62D7E3DE163}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{76AB254F-5D6B-4C07-A8D2-ECC80154331E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76AB254F-5D6B-4C07-A8D2-ECC80154331E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76AB254F-5D6B-4C07-A8D2-ECC80154331E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF0799ED-7CD7-4D66-8A54-E62D7E3DE163}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF0799ED-7CD7-4D66-8A54-E62D7E3DE163}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF0799ED-7CD7-4D66-8A54-E62D7E3DE163}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF0799ED-7CD7-4D66-8A54-E62D7E3DE163}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

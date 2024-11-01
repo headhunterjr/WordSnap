@@ -13,10 +13,4 @@
     <PackageReference Include="Npgsql" Version="8.0.5" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DAL\" />
-    <Folder Include="BLL\" />
-    <Folder Include="Presentation\" />
-  </ItemGroup>
-
 </Project>
