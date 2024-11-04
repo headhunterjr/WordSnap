@@ -34,6 +34,7 @@ class Program
                     username VARCHAR(50) NOT NULL,
                     email VARCHAR(100) NOT NULL,
                     password_hash VARCHAR(255) NOT NULL,
+                    password_salt CHAR(16) NOT NULL,
                     is_verified BOOLEAN DEFAULT FALSE,
                     created_at TIMESTAMP DEFAULT NOW()
                 );
@@ -98,15 +99,21 @@ class Program
                 string username = $"user_{random.Next(1, 1000)}";
                 string email = $"{username}@example.com";
                 string passwordHash = $"hash_{random.Next(10000, 99999)}";
+                string passwordSalt = $"salt_{random.Next(10000, 99999)}_{random.Next(10000, 99999)}";
                 bool isVerified = random.Next(0, 2) == 1;
                 DateTime createdAt = DateTime.Now.AddDays(-random.Next(1, 10));
 
-                string insertUserSql = "INSERT INTO Users (username, email, password_hash, is_verified, created_at) VALUES (@username, @email, @passwordHash, @isVerified, @createdAt) RETURNING id";
+                string insertUserSql = @"
+                    INSERT INTO Users (username, email, password_hash, password_salt, is_verified, created_at) 
+                    VALUES (@username, @email, @passwordHash, @passwordSalt, @isVerified, @createdAt) 
+                    RETURNING id";
+
                 using (var cmd = new NpgsqlCommand(insertUserSql, conn))
                 {
                     cmd.Parameters.AddWithValue("username", username);
                     cmd.Parameters.AddWithValue("email", email);
                     cmd.Parameters.AddWithValue("passwordHash", passwordHash);
+                    cmd.Parameters.AddWithValue("passwordSalt", passwordSalt);
                     cmd.Parameters.AddWithValue("isVerified", isVerified);
                     cmd.Parameters.AddWithValue("createdAt", createdAt);
 
@@ -204,7 +211,7 @@ class Program
         {
             conn.Open();
 
-            PrintTable(conn, "Users", "id, username, email, password_hash, is_verified, created_at");
+            PrintTable(conn, "Users", "id, username, email, password_hash, password_salt, is_verified, created_at");
             PrintTable(conn, "CardSets", "id, user_ref, name, is_public, created_at");
             PrintTable(conn, "Cards", "id, cardset_ref, word_en, word_ua, comment");
             PrintTable(conn, "Progress", "user_ref, cardset_ref, last_accessed, success_rate");
