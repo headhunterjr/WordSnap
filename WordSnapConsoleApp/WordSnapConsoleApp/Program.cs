@@ -34,7 +34,7 @@ class Program
                     username VARCHAR(50) NOT NULL,
                     email VARCHAR(100) NOT NULL,
                     password_hash VARCHAR(255) NOT NULL,
-                    password_salt CHAR(16) NOT NULL,
+                    password_salt CHAR(24) NOT NULL,
                     is_verified BOOLEAN DEFAULT FALSE,
                     created_at TIMESTAMP DEFAULT NOW()
                 );
@@ -99,7 +99,7 @@ class Program
                 string username = $"user_{random.Next(1, 1000)}";
                 string email = $"{username}@example.com";
                 string passwordHash = $"hash_{random.Next(10000, 99999)}";
-                string passwordSalt = $"salt_{random.Next(10000, 99999)}_{random.Next(10000, 99999)}";
+                string passwordSalt = $"passwordsalt_{random.Next(10000, 99999)}_{random.Next(10000, 99999)}";
                 bool isVerified = random.Next(0, 2) == 1;
                 DateTime createdAt = DateTime.Now.AddDays(-random.Next(1, 10));
 
