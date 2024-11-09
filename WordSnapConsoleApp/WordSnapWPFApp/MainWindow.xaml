@@ -7,6 +7,18 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <Border Grid.Column="2" 
+                    Background="#DDDDDD"
+                    CornerRadius="20"
+                    Margin="20,10">
+            <Button Content="Увійти"
+                        Click="LoginButton_Click"
+                        Padding="20,8"
+                        Background="Transparent"
+                        BorderThickness="0"/>
+        </Border>
+        <Frame Grid.Row="1" 
+               x:Name="MainFrame" 
+               NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

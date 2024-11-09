@@ -42,7 +42,7 @@ namespace WordSnapWPFApp.DAL.Models
                 PasswordHash = passwordHash,
                 PasswordSalt = salt,
                 IsVerified = false,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.Now
             };
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
