@@ -20,11 +20,17 @@ namespace WordSnapWPFApp
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.Navigate(new MainPage());
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new LoginPage());
+        }
+
+        private void LogoButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new MainPage());
         }
     }
 }

@@ -7,12 +7,152 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MainPage">
+    <Page.Resources>
+        <Style x:Key="SearchBoxStyle" TargetType="TextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="White" 
+                                CornerRadius="20"
+                                BorderThickness="1"
+                                BorderBrush="#E0E0E0"
+                                Padding="15,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}"
+                                         BorderThickness="0"
+                                         Background="Transparent"
+                                         VerticalAlignment="Center"/>
+                                <Image Grid.Column="1" 
+                                       Source="pack://application:,,,/Images/search.png"
+                                       Width="16" Height="16"
+                                       Opacity="0.5"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="15"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="10" 
+                                    ShadowDepth="1" 
+                                    Opacity="0.2"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CardTextBoxStyle" TargetType="TextBox">
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Foreground" Value="#333333"/>
+        </Style>
+    </Page.Resources>
 
     <Grid Background="#F5F5F5">
-        <TextBlock Text="You're logged in!"
-           FontSize="32"
-           FontWeight="Bold"
-           Margin="0,0,0,50"
-           HorizontalAlignment="Center"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="20,10">
+            <TextBox x:Name="SearchBox"
+                 Style="{StaticResource SearchBoxStyle}"
+                 Height="40"
+                 Width="300"
+                 FontSize="14"
+                 VerticalAlignment="Center"/>
+            <Button x:Name="SearchButton"
+                Width="40"
+                Height="40"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Content="Search"
+                FontSize="12"
+                Click="SearchButton_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="#808080"
+                                            CornerRadius="20"
+                                            Width="80"
+                                            Height="40"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                        <TextBlock Text="Search"
+                                                   Foreground="White"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
+
+        <TextBlock Grid.Row="1" 
+                   Text="Знайдіть щось для себе"
+                   FontSize="20"
+                   FontWeight="SemiBold"
+                   Margin="20,20,20,10"
+                   Foreground="#333333"
+                   HorizontalAlignment="Center"/>
+
+        <WrapPanel Grid.Row="2" 
+                   Margin="10,0"
+                   HorizontalAlignment="Center">
+            <Border Style="{StaticResource CardStyle}" 
+                    Width="200" Height="150">
+                <TextBox x:Name="Card1TextBox"
+                        Style="{StaticResource CardTextBoxStyle}"
+                        Text="Card 1"/>
+            </Border>
+            <Border Style="{StaticResource CardStyle}" 
+                    Width="200" Height="150">
+                <TextBox x:Name="Card2TextBox"
+                        Style="{StaticResource CardTextBoxStyle}"
+                        Text="Card 2"/>
+            </Border>
+            <Border Style="{StaticResource CardStyle}" 
+                    Width="200" Height="150">
+                <TextBox x:Name="Card3TextBox"
+                        Style="{StaticResource CardTextBoxStyle}"
+                        Text="Card 3"/>
+            </Border>
+        </WrapPanel>
+
+        <StackPanel Grid.Row="3" 
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="0,20">
+            <Ellipse Width="8" Height="8" Fill="#666666" Margin="3"/>
+            <Ellipse Width="8" Height="8" Fill="#CCCCCC" Margin="3"/>
+            <Ellipse Width="8" Height="8" Fill="#CCCCCC" Margin="3"/>
+            <Ellipse Width="8" Height="8" Fill="#CCCCCC" Margin="3"/>
+            <Ellipse Width="8" Height="8" Fill="#CCCCCC" Margin="3"/>
+        </StackPanel>
     </Grid>
 </Page>

@@ -91,6 +91,18 @@ namespace WordSnapWPFApp.DAL.Models
             }
             return await _context.Cards.Where(c => c.CardsetRef == cardsetId).ToListAsync();
         }
+
+        public async Task<IEnumerable<Cardset>> GetCardsetsFromSearch(string searchQuery)
+        {
+            var cardsets = await _context.Cardsets.Where(cs => cs.Name.ToLower().Contains(searchQuery.ToLower())).ToListAsync();
+            return cardsets;
+        }
+
+        public async Task<IEnumerable<Cardset>> GetRandomCardsets()
+        {
+            var cardsets = await _context.Cardsets.OrderBy(cs => Guid.NewGuid()).ToListAsync();
+            return cardsets;
+        }
     }
 
 }
