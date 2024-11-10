@@ -15,5 +15,7 @@ namespace WordSnapWPFApp.DAL.Models
         public Task<int> AddCardsetAsync(Cardset cardset);
         public Task<int> AddCardAsync(Card card);
         public Task<bool> SaveChangesAsync();
+        public Task<IEnumerable<Cardset>> GetCardsetsFromSearch(string searchQuery);
+        public Task<IEnumerable<Cardset>> GetRandomCardsets();
     }
 }
