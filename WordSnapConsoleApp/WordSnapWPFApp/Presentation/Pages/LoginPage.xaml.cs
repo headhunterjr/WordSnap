@@ -46,6 +46,10 @@ namespace WordSnapWPFApp.Presentation.Pages
                 var user = await UserService.Instance.LoginUserAsync(Email, Password);
                 if (user != null)
                 {
+                    if (Application.Current.MainWindow is MainWindow mainWindow)
+                    {
+                        mainWindow.UpdateUIForLoginState();
+                    }
                     NavigationService.Navigate(new MainPage());
                 }
                 else

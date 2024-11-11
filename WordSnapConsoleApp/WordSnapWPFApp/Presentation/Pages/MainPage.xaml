@@ -100,7 +100,7 @@
                                             Height="40"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center">
-                                        <TextBlock Text="Search"
+                                        <TextBlock Text="Пошук"
                                                    Foreground="White"
                                                    VerticalAlignment="Center"
                                                    HorizontalAlignment="Center"/>
