@@ -10,15 +10,23 @@ namespace WordSnapWPFApp.BLL.Services
 {
     class UserService :IDisposable
     {
+        private static UserService? _instance;
+        private User? _loggedInUser;
         private readonly WordSnapRepository _repository = new WordSnapRepository();
         private bool _disposed = false;
 
-        public void Dispose()
+        public bool IsUserLoggedIn => _loggedInUser != null;
+
+        private UserService() { }
+        public static UserService Instance
         {
-            if (!_disposed)
+            get
             {
-                _repository?.Dispose();
-                _disposed = true;
+                if (_instance == null)
+                {
+                    _instance = new UserService();
+                }
+                return _instance;
             }
         }
 
@@ -34,7 +42,8 @@ namespace WordSnapWPFApp.BLL.Services
             {
                 throw new UnauthorizedAccessException("Invalid password.");
             }
-            return user;
+            _loggedInUser = user;
+            return _loggedInUser;
         }
 
         public async Task RegisterUserAsync(string username, string email, string password)
@@ -55,6 +64,24 @@ namespace WordSnapWPFApp.BLL.Services
                 CreatedAt = DateTime.Now
             };
             await _repository.AddUserAsync(user);
+        }
+
+        public User? GetLoggedInUser()
+        {
+            return _loggedInUser;
+        }
+
+        public void Logout()
+        {
+            _loggedInUser = null;
+        }
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                _repository?.Dispose();
+                _disposed = true;
+            }
         }
     }
 }

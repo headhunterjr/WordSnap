@@ -22,7 +22,6 @@ namespace WordSnapWPFApp.Presentation.Pages
     /// </summary>
     public partial class RegistrationPage : Page
     {
-        private readonly UserService _userService = new UserService();
         public string? Username {  get; set; }
         public string? Email { get; set; }
         public string? Password { get; set; }
@@ -40,7 +39,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             }
             try
             {
-                await _userService.RegisterUserAsync(Username, Email, Password);
+                await UserService.Instance.RegisterUserAsync(Username, Email, Password);
                 NavigationService.Navigate(new LoginPage());
             }
             catch (InvalidOperationException ex) 
@@ -58,15 +57,6 @@ namespace WordSnapWPFApp.Presentation.Pages
             {
                 Password = passwordBox.Password;
             }
-        }
-        public void Dispose()
-        {
-            _userService?.Dispose();
-        }
-
-        private void Page_Unloaded(object sender, RoutedEventArgs e)
-        {
-            Dispose();
         }
     }
 }

@@ -20,9 +20,8 @@ namespace WordSnapWPFApp.Presentation.Pages
     /// <summary>
     /// Interaction logic for LoginPage.xaml
     /// </summary>
-    public partial class LoginPage : Page, IDisposable
+    public partial class LoginPage : Page
     {
-        private readonly UserService _userService = new UserService();
         public string? Email {  get; set; }
         public string? Password { get; set; }
         public LoginPage()
@@ -44,8 +43,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             }
             try
             {
-                //var user = await _repository.LoginUserAsync(Email, Password);
-                var user = await _userService.LoginUserAsync(Email, Password);
+                var user = await UserService.Instance.LoginUserAsync(Email, Password);
                 if (user != null)
                 {
                     NavigationService.Navigate(new MainPage());
@@ -66,15 +64,6 @@ namespace WordSnapWPFApp.Presentation.Pages
             {
                 Password = passwordBox.Password;
             }
-        }
-
-        public void Dispose()
-        {
-            _userService?.Dispose();
-        }
-        private void Page_Unloaded(object sender, RoutedEventArgs e)
-        {
-            Dispose();
         }
     }
 }
