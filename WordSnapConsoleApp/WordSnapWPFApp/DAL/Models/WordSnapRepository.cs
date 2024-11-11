@@ -12,45 +12,16 @@ namespace WordSnapWPFApp.DAL.Models
     {
         private readonly WordsnapdbContext _context = new WordsnapdbContext();
 
-        public async Task<User> LoginUserAsync(string email, string password)
+        public async Task<User?> GetUserByEmail(string email)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-            if (user == null)
-            {
-                throw new InvalidOperationException("Invalid email.");
-            }
-            var hashedPassword = PasswordService.HashPassword(password, user.PasswordSalt);
-            if (hashedPassword != user.PasswordHash)
-            {
-                throw new UnauthorizedAccessException("Invalid password.");
-            }
             return user;
         }
 
-        public async Task RegisterUserAsync(string username, string email, string password)
+        public async Task<bool> UserExistsByEmailOrUsernameAsync(string username, string email)
         {
-            if (await _context.Users.AnyAsync(u => u.Username == username || u.Email == email))
-            {
-                throw new InvalidOperationException("User with given username or email already exists");
-            }
-            string salt = PasswordService.GenerateSalt();
-            string passwordHash = PasswordService.HashPassword(password, salt);
-            User user = new User
-            {
-                Username = username,
-                Email = email,
-                PasswordHash = passwordHash,
-                PasswordSalt = salt,
-                IsVerified = false,
-                CreatedAt = DateTime.Now
-            };
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<bool> SaveChangesAsync()
-        {
-            return await _context.SaveChangesAsync() >= 0;
+            bool userExists = await _context.Users.AnyAsync(u => u.Username == username || u.Email == email);
+            return userExists;
         }
 
         public void Dispose()
@@ -61,13 +32,15 @@ namespace WordSnapWPFApp.DAL.Models
         public async Task<IEnumerable<Cardset>> GetUsersCardsetsLibraryAsync(int userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-            if (user == null)
-            {
-                throw new UnauthorizedAccessException("Please log in first.");
-            }
             var usersCardsetsIds = await _context.Userscardsets.Where(uc => uc.UserRef == userId).Select(uc => uc.CardsetRef).ToListAsync();
             var usersCardsetsLibrary = await _context.Cardsets.Where(c => usersCardsetsIds.Contains(c.Id)).ToListAsync();
             return usersCardsetsLibrary;
+        }
+
+        public async Task<int> AddUserAsync(User user)
+        {
+            await _context.Users.AddAsync(user);
+            return await _context.SaveChangesAsync();
         }
 
         public async Task<int> AddCardsetAsync(Cardset cardset)
@@ -85,20 +58,16 @@ namespace WordSnapWPFApp.DAL.Models
         public async Task<IEnumerable<Card>> GetCardsOfCardsetAsync(int cardsetId)
         {
             var cardset = await _context.Cardsets.FirstOrDefaultAsync(cs => cs.Id == cardsetId);
-            if (cardset == null)
-            {
-                throw new InvalidOperationException("No such cardset.");
-            }
             return await _context.Cards.Where(c => c.CardsetRef == cardsetId).ToListAsync();
         }
 
-        public async Task<IEnumerable<Cardset>> GetCardsetsFromSearch(string searchQuery)
+        public async Task<IEnumerable<Cardset>> GetCardsetsFromSearchAsync(string searchQuery)
         {
             var cardsets = await _context.Cardsets.Where(cs => cs.Name.ToLower().Contains(searchQuery.ToLower())).ToListAsync();
             return cardsets;
         }
 
-        public async Task<IEnumerable<Cardset>> GetRandomCardsets()
+        public async Task<IEnumerable<Cardset>> GetRandomCardsetsAsync()
         {
             var cardsets = await _context.Cardsets.OrderBy(cs => Guid.NewGuid()).ToListAsync();
             return cardsets;

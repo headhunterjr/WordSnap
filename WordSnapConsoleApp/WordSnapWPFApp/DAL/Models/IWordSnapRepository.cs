@@ -8,14 +8,14 @@ namespace WordSnapWPFApp.DAL.Models
 {
     internal interface IWordSnapRepository
     {
-        public Task RegisterUserAsync(string username, string email, string password);
-        public Task<User> LoginUserAsync(string email, string password);
+        public Task<User?> GetUserByEmail(string email);
+        public Task<bool> UserExistsByEmailOrUsernameAsync(string username, string email);
+        public Task<int> AddUserAsync(User user);
         public Task<IEnumerable<Cardset>> GetUsersCardsetsLibraryAsync(int userId);
         public Task<IEnumerable<Card>> GetCardsOfCardsetAsync(int cardsetId);
         public Task<int> AddCardsetAsync(Cardset cardset);
         public Task<int> AddCardAsync(Card card);
-        public Task<bool> SaveChangesAsync();
-        public Task<IEnumerable<Cardset>> GetCardsetsFromSearch(string searchQuery);
-        public Task<IEnumerable<Cardset>> GetRandomCardsets();
+        public Task<IEnumerable<Cardset>> GetCardsetsFromSearchAsync(string searchQuery);
+        public Task<IEnumerable<Cardset>> GetRandomCardsetsAsync();
     }
 }
