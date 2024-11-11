@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WordSnapWPFApp.BLL.Services;
 using WordSnapWPFApp.DAL.Models;
 
 namespace WordSnapWPFApp.Presentation.Pages
@@ -21,7 +22,7 @@ namespace WordSnapWPFApp.Presentation.Pages
     /// </summary>
     public partial class RegistrationPage : Page
     {
-        private readonly WordSnapRepository _repository = new WordSnapRepository();
+        private readonly UserService _userService = new UserService();
         public string? Username {  get; set; }
         public string? Email { get; set; }
         public string? Password { get; set; }
@@ -39,7 +40,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             }
             try
             {
-                await _repository.RegisterUserAsync(Username, Email, Password);
+                await _userService.RegisterUserAsync(Username, Email, Password);
                 NavigationService.Navigate(new LoginPage());
             }
             catch (InvalidOperationException ex) 
@@ -60,7 +61,7 @@ namespace WordSnapWPFApp.Presentation.Pages
         }
         public void Dispose()
         {
-            _repository?.Dispose();
+            _userService?.Dispose();
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)

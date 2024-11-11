@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WordSnapWPFApp.BLL.Services;
 using WordSnapWPFApp.DAL.Models;
 
 namespace WordSnapWPFApp.Presentation.Pages
@@ -19,9 +20,9 @@ namespace WordSnapWPFApp.Presentation.Pages
     /// <summary>
     /// Interaction logic for LoginPage.xaml
     /// </summary>
-    public partial class LoginPage : Page
+    public partial class LoginPage : Page, IDisposable
     {
-        private readonly WordSnapRepository _repository = new WordSnapRepository();
+        private readonly UserService _userService = new UserService();
         public string? Email {  get; set; }
         public string? Password { get; set; }
         public LoginPage()
@@ -43,7 +44,8 @@ namespace WordSnapWPFApp.Presentation.Pages
             }
             try
             {
-                var user = await _repository.LoginUserAsync(Email, Password);
+                //var user = await _repository.LoginUserAsync(Email, Password);
+                var user = await _userService.LoginUserAsync(Email, Password);
                 if (user != null)
                 {
                     NavigationService.Navigate(new MainPage());
@@ -65,11 +67,11 @@ namespace WordSnapWPFApp.Presentation.Pages
                 Password = passwordBox.Password;
             }
         }
+
         public void Dispose()
         {
-            _repository?.Dispose();
+            _userService?.Dispose();
         }
-
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             Dispose();
