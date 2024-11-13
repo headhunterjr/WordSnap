@@ -7,18 +7,35 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="RegistrationPage">
-
+    <Page.Resources>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
     <Grid Background="#F5F5F5">
         <StackPanel VerticalAlignment="Center" 
                     HorizontalAlignment="Center" 
                     Width="300">
-
             <TextBlock Text="Реєстрація"
                        FontSize="32"
                        FontWeight="Bold"
                        Margin="0,0,0,50"
                        HorizontalAlignment="Center"/>
-
+            <TextBlock Text="Ім'я користувача:"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       Margin="0,0,0,5"
+                       HorizontalAlignment="Left"/>
             <Border Background="White"
                     CornerRadius="20"
                     Margin="0,0,0,15">
@@ -29,7 +46,11 @@
                          Text="{Binding Username, RelativeSource={RelativeSource AncestorType=Page}, UpdateSourceTrigger=PropertyChanged}"
                          Background="Transparent"/>
             </Border>
-
+            <TextBlock Text="Електронна адреса:"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       Margin="0,0,0,5"
+                       HorizontalAlignment="Left"/>
             <Border Background="White"
                     CornerRadius="20"
                     Margin="0,0,0,15">
@@ -40,7 +61,11 @@
                          Text="{Binding Email, RelativeSource={RelativeSource AncestorType=Page}, UpdateSourceTrigger=PropertyChanged}"
                          Background="Transparent"/>
             </Border>
-
+            <TextBlock Text="Пароль:"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       Margin="0,0,0,5"
+                       HorizontalAlignment="Left"/>
             <Border Background="White"
                     CornerRadius="20"
                     Margin="0,0,0,25">
@@ -51,14 +76,15 @@
                             Background="Transparent"
                             PasswordChanged="OnPasswordChanged"/>
             </Border>
-
             <Border CornerRadius="20"
                     Background="#DDDDDD">
-                <Button Content="Зареєструватися"
+                <Button Style="{StaticResource ButtonStyle}"
+                        Content="Зареєструватися"
                         Height="40"
                         Background="Transparent"
                         BorderThickness="0"
-                        FontSize="14" Click="Register_Click"/>
+                        FontSize="14" 
+                        Click="Register_Click"/>
             </Border>
         </StackPanel>
     </Grid>

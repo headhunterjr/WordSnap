@@ -62,5 +62,20 @@ namespace WordSnapWPFApp.Presentation.Pages
                 i++;
             }
         }
+
+        private void Card1Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Card2Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Card3Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

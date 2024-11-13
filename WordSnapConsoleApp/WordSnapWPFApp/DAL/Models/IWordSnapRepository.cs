@@ -12,10 +12,14 @@ namespace WordSnapWPFApp.DAL.Models
         public Task<bool> UserExistsByEmailOrUsernameAsync(string username, string email);
         public Task<int> AddUserAsync(User user);
         public Task<IEnumerable<Cardset>> GetUsersCardsetsLibraryAsync(int userId);
+        public Task<IEnumerable<Cardset>> GetUsersOwnCardsetsLibraryAsync(int userId);
         public Task<IEnumerable<Card>> GetCardsOfCardsetAsync(int cardsetId);
         public Task<int> AddCardsetAsync(Cardset cardset);
         public Task<int> AddCardAsync(Card card);
         public Task<IEnumerable<Cardset>> GetCardsetsFromSearchAsync(string searchQuery);
         public Task<IEnumerable<Cardset>> GetRandomCardsetsAsync();
+        public Task<int> SwitchCardsetPrivacy(int cardsetId);
+        public Task<int> DeleteCardFromCardset(int cardId);
+        public Task<int> DeleteCardset(int cardsetId);
     }
 }

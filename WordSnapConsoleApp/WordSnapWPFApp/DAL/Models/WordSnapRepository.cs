@@ -63,14 +63,53 @@ namespace WordSnapWPFApp.DAL.Models
 
         public async Task<IEnumerable<Cardset>> GetCardsetsFromSearchAsync(string searchQuery)
         {
-            var cardsets = await _context.Cardsets.Where(cs => cs.Name.ToLower().Contains(searchQuery.ToLower())).ToListAsync();
+            var cardsets = await _context.Cardsets.Where(cs => cs.Name.ToLower().Contains(searchQuery.ToLower())).Where(cs => cs.IsPublic ?? false).ToListAsync();
             return cardsets;
         }
 
         public async Task<IEnumerable<Cardset>> GetRandomCardsetsAsync()
         {
-            var cardsets = await _context.Cardsets.OrderBy(cs => Guid.NewGuid()).ToListAsync();
+            var cardsets = await _context.Cardsets.OrderBy(cs => Guid.NewGuid()).Where(cs => cs.IsPublic ?? false).ToListAsync();
             return cardsets;
+        }
+
+        public async Task<IEnumerable<Cardset>> GetUsersOwnCardsetsLibraryAsync(int userId)
+        {
+            var cardsets = await _context.Cardsets.Where(cs => cs.UserRef == userId).ToListAsync();
+            return cardsets;
+        }
+
+        public async Task<int> SwitchCardsetPrivacy(int cardsetId)
+        {
+            var cardset = await _context.Cardsets.FirstOrDefaultAsync(cs => cs.Id == cardsetId);
+            if (cardset == null)
+            {
+                throw new InvalidOperationException("Кардсет не знайдено.");
+            }
+            cardset.IsPublic = !cardset.IsPublic;
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> DeleteCardFromCardset(int cardId)
+        {
+            var card = await _context.Cards.FirstOrDefaultAsync(c => c.Id == cardId);
+            if (card == null)
+            {
+                throw new InvalidOperationException("Картку не знайдено.");
+            }
+            _context.Cards.Remove(card);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> DeleteCardset(int cardsetId)
+        {
+            var cardset = await _context.Cardsets.FirstOrDefaultAsync(cs => cs.Id == cardsetId);
+            if (cardset == null)
+            {
+                throw new InvalidOperationException("Кардсет не знайдено.");
+            }
+            _context.Cardsets.Remove(cardset);
+            return await _context.SaveChangesAsync();
         }
     }
 

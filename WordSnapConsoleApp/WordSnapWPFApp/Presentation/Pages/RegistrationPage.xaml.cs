@@ -22,6 +22,7 @@ namespace WordSnapWPFApp.Presentation.Pages
     /// </summary>
     public partial class RegistrationPage : Page
     {
+        private readonly ValidationService _validationService = new ValidationService();
         public string? Username {  get; set; }
         public string? Email { get; set; }
         public string? Password { get; set; }
@@ -32,9 +33,8 @@ namespace WordSnapWPFApp.Presentation.Pages
 
         private async void Register_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Email)|| string.IsNullOrEmpty(Password))
+            if (!_validationService.ValidateRegistrationForm(Username, Email, Password))
             {
-                MessageBox.Show("Please fill out all the fields");
                 return;
             }
             try
@@ -48,7 +48,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error during registration: " + ex.Message + (ex.InnerException != null ? " | Inner Exception: " + ex.InnerException.Message : ""));
+                MessageBox.Show("Помилка при реєстрації: " + ex.Message);
             }
         }
         private void OnPasswordChanged(object sender, RoutedEventArgs e)

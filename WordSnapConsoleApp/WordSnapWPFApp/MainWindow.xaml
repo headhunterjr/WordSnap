@@ -1,7 +1,50 @@
 ﻿<Window x:Class="WordSnapWPFApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="500" Width="900">
+        Title="MainWindow" Height="600" Width="900">
+    <Window.Resources>
+        <Style x:Key="WordSnapButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="10,0,0,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Content" Value="Пошук"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="#808080"
+                Cursor="Hand"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                            <TextBlock Text="{TemplateBinding Content}"
+                       Foreground="White"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <DockPanel>
         <Grid DockPanel.Dock="Top" Background="#333333" Height="50">
             <Grid.ColumnDefinitions>
@@ -9,21 +52,17 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-
             <Button Grid.Column="0" 
-                    Background="Transparent" 
-                    BorderThickness="0" 
-                    Cursor="Hand" 
+                    Style="{StaticResource WordSnapButtonStyle}"
                     Click="LogoButton_Click">
                 <TextBlock Text="WordSnap" 
-                           FontSize="24" 
-                           FontWeight="Bold"
-                           FontFamily="Segoe Script"
+                           FontSize="24"
+                           FontFamily="pack://application:,,,/Presentation/Fonts/#Pacifico"
                            Foreground="#FFFFFF" 
                            Margin="10,0"/>
             </Button>
-
-            <Button Grid.Column="2" 
+            <Button Style="{StaticResource ButtonStyle}"
+                    Grid.Column="2" 
                     x:Name="LoginButton"
                     Content="Увійти"
                     Padding="10,5"
@@ -34,20 +73,17 @@
                     Visibility="Visible" 
                     Margin="10"/>
         </Grid>
-
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
             <StackPanel x:Name="LeftPanel" Visibility="Collapsed" Width="150" Background="#F0F0F0">
-                <Button Content="Головна" Click="HomeButton_Click" Margin="10,5"/>
-                <Button Content="Мої картки" Margin="10,5"/>
-                <Button Content="Збережені" Margin="10,5"/>
-                <Button Content="Вийти" Click="LogoutButton_Click" Margin="10,5"/>
+                <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Головна" Click="HomeButton_Click" Margin="10,5"/>
+                <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Мої картки" Margin="10,5"/>
+                <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Збережені" Margin="10,5"/>
+                <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Вийти" Click="LogoutButton_Click" Margin="10,5"/>
             </StackPanel>
-
             <Frame Grid.Column="1" 
                    x:Name="MainFrame" 
                    NavigationUIVisibility="Hidden"

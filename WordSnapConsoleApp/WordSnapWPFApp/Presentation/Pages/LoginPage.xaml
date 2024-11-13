@@ -7,61 +7,83 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Login">
-
+    <Page.Resources>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
     <Grid Background="#F5F5F5">
         <StackPanel VerticalAlignment="Center" 
                     HorizontalAlignment="Center" 
                     Width="300">
-
             <TextBlock Text="WordSnap"
                        FontSize="32"
                        FontWeight="Bold"
                        Margin="0,0,0,50"
                        HorizontalAlignment="Center"/>
-
+            <TextBlock Text="Електронна адреса:"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       Margin="0,0,0,5"
+                       HorizontalAlignment="Left"/>
             <Border Background="White"
                     CornerRadius="20"
                     Margin="0,0,0,15">
                 <TextBox Height="40"
-                     BorderThickness="0"
-                     Padding="15,10"
-                     FontSize="14"
-                     Text="{Binding Email, RelativeSource={RelativeSource AncestorType=Page}, UpdateSourceTrigger=PropertyChanged}"
-                     Background="Transparent"/>
+                         BorderThickness="0"
+                         Padding="15,10"
+                         FontSize="14"
+                         Text="{Binding Email, RelativeSource={RelativeSource AncestorType=Page}, UpdateSourceTrigger=PropertyChanged}"
+                         Background="Transparent"/>
             </Border>
-
+            <TextBlock Text="Пароль:"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       Margin="0,0,0,5"
+                       HorizontalAlignment="Left"/>
             <Border Background="White"
                     CornerRadius="20"
                     Margin="0,0,0,25">
                 <PasswordBox Height="40"
-                    BorderThickness="0"
-                    Padding="15,10"
-                    FontSize="14"
-                    Background="Transparent"
-                    PasswordChanged="OnPasswordChanged"/>
+                            BorderThickness="0"
+                            Padding="15,10"
+                            FontSize="14"
+                            Background="Transparent"
+                            PasswordChanged="OnPasswordChanged"/>
             </Border>
-
             <Border CornerRadius="20"
                     Background="#DDDDDD"
                     Margin="0,0,0,30">
-                <Button Content="Увійти"
+                <Button Style="{StaticResource ButtonStyle}"
+                        Content="Увійти"
                         Height="40"
                         Background="Transparent"
                         BorderThickness="0"
-                        FontSize="14" Click="LoginButton_Click"/>
+                        FontSize="14" 
+                        Click="LoginButton_Click"/>
             </Border>
-
             <TextBlock Text="Бажаєте створити акаунт?"
                        HorizontalAlignment="Center"
                        Margin="0,0,0,15"/>
-
             <Border CornerRadius="20"
                     Background="#DDDDDD">
-                <Button Content="Реєстрація"
+                <Button Style="{StaticResource ButtonStyle}"
+                        Content="Реєстрація"
                         Height="40"
                         Background="Transparent"
                         BorderThickness="0"
-                        FontSize="14" Click="RegisterButton_Click"/>
+                        FontSize="14" 
+                        Click="RegisterButton_Click"/>
             </Border>
         </StackPanel>
     </Grid>
