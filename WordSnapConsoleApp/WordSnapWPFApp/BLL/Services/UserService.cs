@@ -35,12 +35,12 @@ namespace WordSnapWPFApp.BLL.Services
             var user = await _repository.GetUserByEmail(email);
             if (user == null)
             {
-                throw new InvalidOperationException("Invalid email.");
+                throw new InvalidOperationException("Неправильна пошта.");
             }
             var hashedPassword = PasswordService.HashPassword(password, user.PasswordSalt);
             if (hashedPassword != user.PasswordHash)
             {
-                throw new UnauthorizedAccessException("Invalid password.");
+                throw new UnauthorizedAccessException("Неправильний пароль.");
             }
             _loggedInUser = user;
             return _loggedInUser;
@@ -50,7 +50,7 @@ namespace WordSnapWPFApp.BLL.Services
         {
             if (await _repository.UserExistsByEmailOrUsernameAsync(username, email))
             {
-                throw new InvalidOperationException("User with given username or email already exists");
+                throw new InvalidOperationException("Користувач з таким іменем або поштою вже існує.");
             }
             string salt = PasswordService.GenerateSalt();
             string passwordHash = PasswordService.HashPassword(password, salt);

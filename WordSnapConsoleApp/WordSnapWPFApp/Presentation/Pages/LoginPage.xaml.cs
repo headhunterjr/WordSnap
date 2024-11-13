@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace WordSnapWPFApp.Presentation.Pages
         {
             if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
             {
-                MessageBox.Show("Please enter both email and password.");
+                MessageBox.Show("Введіть пошту та пароль.");
                 return;
             }
             try
@@ -54,12 +55,12 @@ namespace WordSnapWPFApp.Presentation.Pages
                 }
                 else
                 {
-                    MessageBox.Show("Invalid email or password.");
+                    MessageBox.Show("Неправильна пошта або пароль.");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error during login: " + ex.Message);
+                MessageBox.Show("Помилка під час входу: " + ex.Message);
             }
         }
         private void OnPasswordChanged(object sender, RoutedEventArgs e)
