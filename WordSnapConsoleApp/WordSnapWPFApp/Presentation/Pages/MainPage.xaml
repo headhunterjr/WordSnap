@@ -154,16 +154,5 @@
                         Text="Card 3"/>
             </Button>
         </WrapPanel>
-
-        <StackPanel Grid.Row="3" 
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Center"
-                    Margin="0,20">
-            <Ellipse Width="8" Height="8" Fill="#666666" Margin="3"/>
-            <Ellipse Width="8" Height="8" Fill="#CCCCCC" Margin="3"/>
-            <Ellipse Width="8" Height="8" Fill="#CCCCCC" Margin="3"/>
-            <Ellipse Width="8" Height="8" Fill="#CCCCCC" Margin="3"/>
-            <Ellipse Width="8" Height="8" Fill="#CCCCCC" Margin="3"/>
-        </StackPanel>
     </Grid>
 </Page>

@@ -36,9 +36,9 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
                             <TextBlock Text="{TemplateBinding Content}"
-                       Foreground="White"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"/>
+                                Foreground="White"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -81,13 +81,12 @@
             <StackPanel x:Name="LeftPanel" Visibility="Collapsed" Width="150" Background="#F0F0F0">
                 <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Головна" Click="HomeButton_Click" Margin="10,5"/>
                 <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Мої картки" Click="OwnedCardsetsLibraryButton_Click" Margin="10,5"/>
-                <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Збережені" Margin="10,5"/>
+                <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Збережені" Click="AccessedCardsetLibraryButton_Click" Margin="10,5"/>
                 <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Вийти" Click="LogoutButton_Click" Margin="10,5"/>
             </StackPanel>
             <Frame Grid.Column="1" 
                    x:Name="MainFrame" 
-                   NavigationUIVisibility="Hidden"
-                   Margin="10"/>
+                   NavigationUIVisibility="Hidden"/>
         </Grid>
     </DockPanel>
 </Window>

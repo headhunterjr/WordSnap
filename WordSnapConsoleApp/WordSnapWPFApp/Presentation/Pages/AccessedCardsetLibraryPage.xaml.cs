@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using WordSnapWPFApp.BLL.Services;
+
+namespace WordSnapWPFApp.Presentation.Pages
+{
+    /// <summary>
+    /// Interaction logic for AccessedCardsetLibraryPage.xaml
+    /// </summary>
+    public partial class AccessedCardsetLibraryPage : Page
+    {
+        private readonly CardsetService _cardsetService = new CardsetService();
+        public AccessedCardsetLibraryPage()
+        {
+            InitializeComponent();
+            InitializeCardsets();
+        }
+        private async void InitializeCardsets()
+        {
+            int userId = UserService.Instance.GetLoggedInUser().Id;
+            var cardsets = await _cardsetService.GetUsersCardsetsLibraryAsync(userId);
+            CardsetsListBox.ItemsSource = cardsets;
+        }
+
+        private void CardsetButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+    }
+}
