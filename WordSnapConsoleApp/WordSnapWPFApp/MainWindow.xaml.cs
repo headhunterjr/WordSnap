@@ -49,5 +49,10 @@ namespace WordSnapWPFApp
                 LoginButton.Visibility = Visibility.Visible;
             }
         }
+
+        private void OwnedCardsetsLibraryButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new OwnedCardsetLibraryPage());
+        }
     }
 }
