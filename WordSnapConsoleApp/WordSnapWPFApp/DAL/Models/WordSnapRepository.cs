@@ -31,7 +31,6 @@ namespace WordSnapWPFApp.DAL.Models
 
         public async Task<IEnumerable<Cardset>> GetUsersCardsetsLibraryAsync(int userId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
             var usersCardsetsIds = await _context.Userscardsets.Where(uc => uc.UserRef == userId).Select(uc => uc.CardsetRef).ToListAsync();
             var usersCardsetsLibrary = await _context.Cardsets.Where(c => usersCardsetsIds.Contains(c.Id)).ToListAsync();
             return usersCardsetsLibrary;

@@ -54,5 +54,10 @@ namespace WordSnapWPFApp
         {
             MainFrame.Navigate(new OwnedCardsetLibraryPage());
         }
+
+        private void AccessedCardsetLibraryButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new AccessedCardsetLibraryPage());
+        }
     }
 }

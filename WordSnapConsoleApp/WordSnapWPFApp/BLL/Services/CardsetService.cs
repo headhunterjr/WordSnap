@@ -37,5 +37,10 @@ namespace WordSnapWPFApp.BLL.Services
             var cardsets = await _repository.GetUsersOwnCardsetsLibraryAsync(userId);
             return cardsets;
         }
+        public async Task<IEnumerable<Cardset>> GetUsersCardsetsLibraryAsync(int userId)
+        {
+            var cardsets = await _repository.GetUsersCardsetsLibraryAsync(userId);
+            return cardsets;
+        }
     }
 }
