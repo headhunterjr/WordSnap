@@ -47,5 +47,32 @@ namespace WordSnapWPFApp.BLL.Services
             var cards = await _repository.GetCardsOfCardsetAsync(cardsetId);
             return cards;
         }
+        public async Task<IEnumerable<Card>> GetCardsOfCardsetForTestAsync(int cardsetId)
+        {
+            var allCards = await _repository.GetCardsOfCardsetAsync(cardsetId);
+            var testCards = allCards.OrderBy(_ => Guid.NewGuid()).Take(5);
+            return testCards;
+        }
+        public async Task<int> SaveTestProgressAsync(int userId, int cardsetId, double successRate)
+        {
+            var existingProgress = await _repository.GetProgress(userId, cardsetId);
+            if (existingProgress == null)
+            {
+                var progress = new Progress
+                {
+                    UserRef = userId,
+                    CardsetRef = cardsetId,
+                    LastAccessed = DateTime.Now,
+                    SuccessRate = successRate,
+                };
+                return await _repository.AddTestProgressAsync(progress);
+            }
+            if (successRate > existingProgress.SuccessRate)
+            {
+                existingProgress.SuccessRate = successRate;
+                return await _repository.UpdateProgress(existingProgress);
+            }
+            return await _repository.SaveChangesAsync();
+        }
     }
 }

@@ -21,5 +21,9 @@ namespace WordSnapWPFApp.DAL.Models
         public Task<int> SwitchCardsetPrivacy(int cardsetId);
         public Task<int> DeleteCardFromCardset(int cardId);
         public Task<int> DeleteCardset(int cardsetId);
+        public Task<int> AddTestProgressAsync(Progress progress);
+        public Task<Progress?> GetProgress(int userId, int cardsetId);
+        public Task<int> UpdateProgress(Progress progress);
+        public Task<int> SaveChangesAsync();
     }
 }

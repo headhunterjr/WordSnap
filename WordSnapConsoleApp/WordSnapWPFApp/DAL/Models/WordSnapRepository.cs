@@ -56,8 +56,8 @@ namespace WordSnapWPFApp.DAL.Models
 
         public async Task<IEnumerable<Card>> GetCardsOfCardsetAsync(int cardsetId)
         {
-            var cardset = await _context.Cardsets.FirstOrDefaultAsync(cs => cs.Id == cardsetId);
-            return await _context.Cards.Where(c => c.CardsetRef == cardsetId).ToListAsync();
+            var cards = await _context.Cards.Where(c => c.CardsetRef == cardsetId).ToListAsync();
+            return cards;
         }
 
         public async Task<IEnumerable<Cardset>> GetCardsetsFromSearchAsync(string searchQuery)
@@ -108,6 +108,28 @@ namespace WordSnapWPFApp.DAL.Models
                 throw new InvalidOperationException("Кардсет не знайдено.");
             }
             _context.Cardsets.Remove(cardset);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> AddTestProgressAsync(Progress progress)
+        {
+            _context.Progresses.Add(progress);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<Progress?> GetProgress(int userId, int cardsetId)
+        {
+            var progress = await _context.Progresses.FirstOrDefaultAsync(p => p.UserRef == userId & p.CardsetRef == cardsetId);
+            return progress;
+        }
+        public async Task<int> UpdateProgress(Progress progress)
+        {
+            _context.Progresses.Update(progress);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
             return await _context.SaveChangesAsync();
         }
     }
