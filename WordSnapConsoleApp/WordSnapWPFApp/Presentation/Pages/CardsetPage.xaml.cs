@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WordSnapWPFApp.BLL.Services;
+using WordSnapWPFApp.DAL.Models;
 
 namespace WordSnapWPFApp.Presentation.Pages
 {
@@ -20,9 +22,47 @@ namespace WordSnapWPFApp.Presentation.Pages
     /// </summary>
     public partial class CardsetPage : Page
     {
-        public CardsetPage()
+        private readonly CardsetService _cardsetService = new CardsetService();
+        private int _cardsetId;
+        private string _cardsetName;
+        private Card _selectedCard;
+        public CardsetPage(int cardsetId, string cardsetName)
         {
             InitializeComponent();
+            _cardsetId = cardsetId;
+            _cardsetName = cardsetName;
+            InitializeCards();
+        }
+
+        private async void InitializeCards()
+        {
+            var cards = await _cardsetService.GetCardsOfCardsetAsync(_cardsetId);
+            CardsListBox.ItemsSource = cards;
+            CardsetName.Text = _cardsetName;
+        }
+
+        private void CardButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.DataContext is Card card)
+            {
+                _selectedCard = card;
+                CardInfo.Text = card.WordEn;
+            }
+        }
+
+        private void CardInfo_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (_selectedCard != null)
+            {
+                if (CardInfo.Text == _selectedCard.WordEn)
+                {
+                    CardInfo.Text = _selectedCard.WordUa;
+                }
+                else
+                {
+                    CardInfo.Text = _selectedCard.WordEn;
+                }
+            }
         }
     }
 }

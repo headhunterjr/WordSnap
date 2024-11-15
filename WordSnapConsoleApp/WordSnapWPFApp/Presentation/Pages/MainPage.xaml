@@ -138,17 +138,17 @@
         <WrapPanel Grid.Row="2" 
                    Margin="10,0"
                    HorizontalAlignment="Center">
-            <Button Style="{StaticResource CardButtonStyle}" Click="Card1Button_Click">
+            <Button Style="{StaticResource CardButtonStyle}" Click="CardButton_Click" Tag="{Binding}">
                 <TextBox x:Name="Card1TextBox"
                         Style="{StaticResource CardTextBoxStyle}"
                         Text="Card 1"/>
             </Button>
-            <Button Style="{StaticResource CardButtonStyle}" Click="Card2Button_Click">
+            <Button Style="{StaticResource CardButtonStyle}" Click="CardButton_Click" Tag="{Binding}">
                 <TextBox x:Name="Card2TextBox"
                         Style="{StaticResource CardTextBoxStyle}"
                         Text="Card 2"/>
             </Button>
-            <Button Style="{StaticResource CardButtonStyle}" Click="Card3Button_Click">
+            <Button Style="{StaticResource CardButtonStyle}" Click="CardButton_Click" Tag="{Binding}">
                 <TextBox x:Name="Card3TextBox"
                         Style="{StaticResource CardTextBoxStyle}"
                         Text="Card 3"/>

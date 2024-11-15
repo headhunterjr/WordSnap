@@ -38,7 +38,10 @@ namespace WordSnapWPFApp.Presentation.Pages
 
         private void CardsetButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (sender is Button button && button.DataContext is Cardset cardset)
+            {
+                NavigationService.Navigate(new CardsetPage(cardset.Id, cardset.Name));
+            }
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)

@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WordSnapWPFApp.BLL.Services;
+using WordSnapWPFApp.DAL.Models;
 
 namespace WordSnapWPFApp.Presentation.Pages
 {
@@ -36,7 +37,10 @@ namespace WordSnapWPFApp.Presentation.Pages
 
         private void CardsetButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (sender is Button button && button.DataContext is Cardset cardset)
+            {
+                NavigationService.Navigate(new CardsetPage(cardset.Id, cardset.Name));
+            }
         }
     }
 }

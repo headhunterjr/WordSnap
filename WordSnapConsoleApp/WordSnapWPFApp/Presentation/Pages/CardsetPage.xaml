@@ -108,68 +108,53 @@
     </Page.Resources>
     <Grid Background="#F5F5F5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0"  Orientation="Vertical" VerticalAlignment="Top" Margin="10,10">
-            <TextBox x:Name="CardsetName"
-                     Style="{StaticResource CardTextBoxStyle}"
-                     HorizontalAlignment="Center"
-                     Text="PlaseHolder"
-                     FontSize="30"
-                     FontWeight="SemiBold"
-                     Foreground="#333333"
-                     />
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <StackPanel VerticalAlignment="Top">
-                    <Button Style="{StaticResource CardButtonStyle}" Click="CardButton_Click">
-                        <TextBox x:Name="Card1TextBox"
-                              Style="{StaticResource CardTextBoxStyle}"
-                              Text="Card 1"/>
-                    </Button>
-                    <Button Style="{StaticResource CardButtonStyle}" Click="CardButton_Click">
-                        <TextBox x:Name="Card2TextBox"
-                              Style="{StaticResource CardTextBoxStyle}"
-                              Text="Card 2"/>
-                    </Button>
-                    <Button Style="{StaticResource CardButtonStyle}" Click="CardButton_Click">
-                        <TextBox x:Name="Card3TextBox"
-                              Style="{StaticResource CardTextBoxStyle}"
-                              Text="Card 3"/>
-                    </Button>
-                    <Button Style="{StaticResource CardButtonStyle}" Click="CardButton_Click">
-                        <TextBox x:Name="Card4TextBox"
-                             Style="{StaticResource CardTextBoxStyle}"
-                             Text="Card 4"/>
-                    </Button>
-                    <!-- Add more card buttons as needed -->
-                </StackPanel>
+        <Grid Grid.Column="0" Margin="10,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button Style="{StaticResource CardButtonStyle}" IsHitTestVisible="False" Height="50" Margin="-4,3,10,3">
+                <TextBlock x:Name="CardsetName" 
+                           Text="Placeholder" 
+                           FontSize="20" 
+                           FontWeight="SemiBold" 
+                           Foreground="#333333" />
+            </Button>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,10,0,0">
+                <ListBox x:Name="CardsListBox" 
+                         Background="Transparent" 
+                         HorizontalContentAlignment="Center" 
+                         VerticalAlignment="Stretch"
+                         BorderThickness="0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Button Style="{StaticResource CardButtonStyle}" Click="CardButton_Click">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBox Text="{Binding WordEn}" 
+                                             Style="{StaticResource CardTextBoxStyle}" 
+                                             IsReadOnly="True" />
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </ScrollViewer>
-            
+        </Grid>
 
-
-        </StackPanel>
         <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
-            <Border Height="200" Width="340" Margin="0,10" CornerRadius="30" Background="#CCCCCC">
-                <TextBlock x:Name="CardInfo" Text="Info" HorizontalAlignment="Center" FontSize="20" Margin="20"/>
-
+            <Border Height="200" Width="340" Margin="0,10" CornerRadius="30" Background="#CCCCCC" MouseDown="CardInfo_Click">
+                <TextBlock x:Name="CardInfo" 
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center" 
+                           FontSize="20" 
+                           Margin="20" />
             </Border>
-            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="20,10">
-                <Button x:Name="ICnowButton"
-                     Style="{StaticResource ResultButtonStyle}"
-                     Click="SearchButton_Click"
-                     Content="Знаю"/>
-                <Button x:Name="IDontCnowButton"
-                     Style="{StaticResource ResultButtonStyle}"
-                     Click="SearchButton_Click"
-                     Content="Не знаю"/>
-                
-
-            </StackPanel>
-            
         </StackPanel>
-
-        
     </Grid>
 </Page>

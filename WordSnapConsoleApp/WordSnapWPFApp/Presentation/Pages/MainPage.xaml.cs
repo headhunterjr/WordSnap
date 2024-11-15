@@ -37,44 +37,54 @@ namespace WordSnapWPFApp.Presentation.Pages
             {
                 var cardsets = await _cardsetService.GetCardsetsFromSearchAsync(searchQuery);
 
+                var buttons = new[] { Card1TextBox.Parent as Button, Card2TextBox.Parent as Button, Card3TextBox.Parent as Button };
+
                 int i = 0;
                 foreach (var cardset in cardsets)
                 {
-                    cardsetTextBoxes[i].Text = cardset.Name;
-                    i++;
+                    if (i < buttons.Length && buttons[i] != null)
+                    {
+                        buttons[i].Tag = cardset;
+                        cardsetTextBoxes[i].Text = cardset.Name;
+                        i++;
+                    }
                 }
 
-                for (; i < cardsetTextBoxes.Length; i++)
+                for (; i < buttons.Length; i++)
                 {
-                    cardsetTextBoxes[i].Text = string.Empty;
+                    if (buttons[i] != null)
+                    {
+                        buttons[i].Tag = null;
+                        cardsetTextBoxes[i].Text = string.Empty;
+                    }
                 }
             }
         }
+
         private async void InitializeRabdomCardsets()
         {
             cardsetTextBoxes = [Card1TextBox, Card2TextBox, Card3TextBox];
+            var buttons = new[] { Card1TextBox.Parent as Button, Card2TextBox.Parent as Button, Card3TextBox.Parent as Button };
             var cardsets = await _cardsetService.GetRandomCardsetsAsync();
 
             int i = 0;
             foreach (var cardset in cardsets)
             {
-                cardsetTextBoxes[i].Text = cardset.Name;
-                i++;
+                if (i < buttons.Length)
+                {
+                    buttons[i].Tag = cardset;
+                    cardsetTextBoxes[i].Text = cardset.Name;
+                    i++;
+                }
             }
         }
 
-        private void Card1Button_Click(object sender, RoutedEventArgs e)
+        private void CardButton_Click(object sender, RoutedEventArgs e)
         {
-        }
-
-        private void Card2Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Card3Button_Click(object sender, RoutedEventArgs e)
-        {
-
+            if (sender is Button button && button.Tag is Cardset cardset)
+            {
+                NavigationService.Navigate(new CardsetPage(cardset.Id, cardset.Name));
+            }
         }
     }
 }

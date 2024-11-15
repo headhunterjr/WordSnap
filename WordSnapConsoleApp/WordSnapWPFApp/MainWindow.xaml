@@ -79,7 +79,7 @@
                 <ColumnDefinition Width="29*"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <StackPanel x:Name="LeftPanel" Visibility="Collapsed" Width="150" Background="#F0F0F0" Grid.ColumnSpan="2" Margin="0,0,720,0">
+            <StackPanel x:Name="LeftPanel" Visibility="Collapsed" Width="150" Background="#F0F0F0">
                 <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Головна" Click="HomeButton_Click" Margin="10,5"/>
                 <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Мої картки" Click="OwnedCardsetsLibraryButton_Click" Margin="10,5"/>
                 <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Збережені" Click="AccessedCardsetLibraryButton_Click" Margin="10,5"/>
