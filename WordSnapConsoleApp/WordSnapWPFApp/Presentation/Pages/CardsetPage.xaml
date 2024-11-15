@@ -105,6 +105,28 @@
             <Setter Property="Margin" Value="10"/>
             <Setter Property="Foreground" Value="#333333"/>
         </Style>
+        <Style x:Key="TestButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0,0,20,20"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="#808080"
+                                CornerRadius="10"
+                                Cursor="Hand">
+                            <TextBlock Text="{TemplateBinding Content}"
+                                       Foreground="White"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
     <Grid Background="#F5F5F5">
         <Grid.ColumnDefinitions>
@@ -147,14 +169,34 @@
             </ScrollViewer>
         </Grid>
 
-        <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
-            <Border Height="200" Width="340" Margin="0,10" CornerRadius="30" Background="#CCCCCC" MouseDown="CardInfo_Click">
-                <TextBlock x:Name="CardInfo" 
-                           HorizontalAlignment="Center" 
-                           VerticalAlignment="Center" 
-                           FontSize="20" 
-                           Margin="20" />
-            </Border>
-        </StackPanel>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Button x:Name="ActionButton"
+                    Margin="20"
+                    Content="Тест"
+                    Style="{StaticResource TestButtonStyle}"
+                    Click="TestButton_Click"/>
+
+            <StackPanel Grid.Row="1" 
+                        Orientation="Vertical" 
+                        VerticalAlignment="Center">
+                <Border Height="200" 
+                        Width="340" 
+                        Margin="0,10" 
+                        CornerRadius="30" 
+                        Background="#CCCCCC" 
+                        MouseDown="CardInfo_Click">
+                    <TextBlock x:Name="CardInfo" 
+                               HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" 
+                               FontSize="20" 
+                               Margin="20" />
+                </Border>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>
