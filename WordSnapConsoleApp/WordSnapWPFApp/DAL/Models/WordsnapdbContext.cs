@@ -28,7 +28,8 @@ public partial class WordsnapdbContext : DbContext
         {
             var configuration = new ConfigurationBuilder()
                     .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                    .AddJsonFile("C:\\Users\\111\\source\\repos\\Sem5 tre\\Sem5 tre\\appsettings.json", optional: false, reloadOnChange: true)
+
                     .Build();
             var connectionString = configuration.GetConnectionString("WordSnapDatabaseConnection");
             optionsBuilder.UseNpgsql(connectionString);

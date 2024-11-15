@@ -76,9 +76,10 @@
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="29*"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <StackPanel x:Name="LeftPanel" Visibility="Collapsed" Width="150" Background="#F0F0F0">
+            <StackPanel x:Name="LeftPanel" Visibility="Collapsed" Width="150" Background="#F0F0F0" Grid.ColumnSpan="2" Margin="0,0,720,0">
                 <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Головна" Click="HomeButton_Click" Margin="10,5"/>
                 <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Мої картки" Click="OwnedCardsetsLibraryButton_Click" Margin="10,5"/>
                 <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Збережені" Click="AccessedCardsetLibraryButton_Click" Margin="10,5"/>
@@ -86,7 +87,7 @@
             </StackPanel>
             <Frame Grid.Column="1" 
                    x:Name="MainFrame" 
-                   NavigationUIVisibility="Hidden"/>
+                   NavigationUIVisibility="Hidden" Grid.ColumnSpan="2"/>
         </Grid>
     </DockPanel>
 </Window>
