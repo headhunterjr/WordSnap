@@ -74,5 +74,20 @@ namespace WordSnapWPFApp.BLL.Services
             }
             return await _repository.SaveChangesAsync();
         }
+        public async Task<Cardset> GetCardsetAsync(int cardsetId)
+        {
+            var cardset = await _repository.GetCardsetAsync(cardsetId);
+            if (cardset == null)
+            {
+                throw new InvalidOperationException("Цей кардсет не існує");
+            }
+            return cardset;
+        }
+        public async Task<int> UpdateCardsetNameAsync(int cardsetId, string name)
+        {
+            var cardset = await GetCardsetAsync(cardsetId);
+            cardset.Name = name;
+            return await _repository.UpdateCardsetAsync(cardset);
+        }
     }
 }

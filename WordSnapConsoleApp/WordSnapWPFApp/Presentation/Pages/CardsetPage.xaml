@@ -36,7 +36,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
         <Style x:Key="CardButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="White"/>
             <Setter Property="Margin" Value="3"/>
@@ -65,34 +64,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-        <Style x:Key="ResultButtonStyle" TargetType="Button">
-            <Setter Property="Width" Value="100"/>
-            <Setter Property="Height" Value="50"/>
-            <Setter Property="Margin" Value="10"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="#808080"
-                            CornerRadius="10"
-                            Cursor="Hand"
-                            Width="{TemplateBinding Width}"
-                            Height="{TemplateBinding Height}"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center">
-                            <TextBlock Text="{TemplateBinding Content}"
-                                   Foreground="Black"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
         <Style x:Key="CardTextBoxStyle" TargetType="TextBox">
             <Setter Property="IsReadOnly" Value="True"/>
             <Setter Property="FontSize" Value="20"/>
@@ -197,6 +168,11 @@
                                Margin="20" />
                 </Border>
             </StackPanel>
+            <Button x:Name="EditCardsetButton"
+                        Margin="0,320,20,10"
+                        Content="Змінити"
+                        Style="{StaticResource TestButtonStyle}"
+                        Click="EditCardsetButton_Click" Grid.Row="1"/>
         </Grid>
     </Grid>
 </Page>

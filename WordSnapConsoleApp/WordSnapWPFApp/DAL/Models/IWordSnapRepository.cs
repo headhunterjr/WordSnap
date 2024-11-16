@@ -25,5 +25,7 @@ namespace WordSnapWPFApp.DAL.Models
         public Task<Progress?> GetProgress(int userId, int cardsetId);
         public Task<int> UpdateProgress(Progress progress);
         public Task<int> SaveChangesAsync();
+        public Task<Cardset?> GetCardsetAsync(int cardsetId);
+        public Task<int> UpdateCardsetAsync(Cardset cardset);
     }
 }

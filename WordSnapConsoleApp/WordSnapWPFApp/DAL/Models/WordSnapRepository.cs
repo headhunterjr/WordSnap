@@ -132,6 +132,17 @@ namespace WordSnapWPFApp.DAL.Models
         {
             return await _context.SaveChangesAsync();
         }
+
+        public async Task<Cardset?> GetCardsetAsync(int cardsetId)
+        {
+            var cardset = await _context.Cardsets.FirstOrDefaultAsync(cs => cs.Id == cardsetId);
+            return cardset;
+        }
+        public async Task<int> UpdateCardsetAsync(Cardset cardset)
+        {
+            _context.Cardsets.Update(cardset);
+            return await _context.SaveChangesAsync();
+        }
     }
 
 }
