@@ -8,48 +8,120 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="TestPage">
 
-    <Grid Background="#FFFFFF">
+    <Page.Resources>
+        <!-- Test Button Style (similar to CardButtonStyle but adapted for test purposes) -->
+        <Style x:Key="TestButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="10" 
+                                    ShadowDepth="1" 
+                                    Opacity="0.2"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="15" 
+                                Cursor="Hand"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <TextBlock Text="{TemplateBinding Content}"
+                                     FontSize="16"
+                                     Foreground="#333333"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     TextWrapping="Wrap"
+                                     Margin="10"
+                                     TextAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Back Button Style -->
+        <Style x:Key="BackButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="20"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="#808080"
+                                CornerRadius="10"
+                                Cursor="Hand">
+                            <TextBlock Text="{TemplateBinding Content}"
+                                     Foreground="White"
+                                     FontSize="16"
+                                     FontWeight="SemiBold"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="#F5F5F5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
         <!-- Back Button -->
         <Button Content="Back" 
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Top" 
-                Width="100" 
-                Height="40"
-                Margin="10"
-                Click="BackButton_Click" />
+                Style="{StaticResource BackButtonStyle}"
+                Click="BackButton_Click"/>
 
-        <!-- WordEn and WordUa Lists -->
-        <Grid>
+        <!-- Word Lists -->
+        <Grid Grid.Row="1" Margin="0,10,0,20">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
             <!-- WordEn Buttons -->
-            <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="20">
-                <ItemsControl ItemsSource="{Binding WordEnButtons}">
+            <ScrollViewer Grid.Column="0" 
+                         VerticalScrollBarVisibility="Auto" 
+                         HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl ItemsSource="{Binding WordEnButtons}"
+                            HorizontalAlignment="Center">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Button Content="{Binding Text}"
+                                    Style="{StaticResource TestButtonStyle}"
                                     Click="WordEnButton_Click"
-                                    Tag="{Binding WordEn}" />
+                                    Tag="{Binding WordEn}"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-            </StackPanel>
+            </ScrollViewer>
 
             <!-- WordUa Buttons -->
-            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="20">
-                <ItemsControl ItemsSource="{Binding WordUaButtons}">
+            <ScrollViewer Grid.Column="1" 
+                         VerticalScrollBarVisibility="Auto" 
+                         HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl ItemsSource="{Binding WordUaButtons}"
+                            HorizontalAlignment="Center">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Button Content="{Binding Text}"
+                                    Style="{StaticResource TestButtonStyle}"
                                     Click="WordUaButton_Click"
-                                    Tag="{Binding WordUa}" />
+                                    Tag="{Binding WordUa}"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-            </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Page>

@@ -41,11 +41,13 @@ namespace WordSnapWPFApp
             if (UserService.Instance.IsUserLoggedIn)
             {
                 LeftPanel.Visibility = Visibility.Visible;
+                ExitButton.Visibility = Visibility.Visible;
                 LoginButton.Visibility = Visibility.Collapsed;
             }
             else
             {
                 LeftPanel.Visibility = Visibility.Collapsed;
+                ExitButton.Visibility = Visibility.Collapsed;
                 LoginButton.Visibility = Visibility.Visible;
             }
         }
