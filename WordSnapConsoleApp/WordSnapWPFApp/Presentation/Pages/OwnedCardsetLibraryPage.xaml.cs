@@ -46,7 +46,7 @@ namespace WordSnapWPFApp.Presentation.Pages
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new EditOrCreateCardsetPage());
         }
     }
 }

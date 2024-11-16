@@ -141,17 +141,20 @@
             <Button Style="{StaticResource CardButtonStyle}" Click="CardButton_Click" Tag="{Binding}">
                 <TextBox x:Name="Card1TextBox"
                         Style="{StaticResource CardTextBoxStyle}"
-                        Text="Card 1"/>
+                        Text="Card 1"
+                        IsReadOnly="True"/>
             </Button>
             <Button Style="{StaticResource CardButtonStyle}" Click="CardButton_Click" Tag="{Binding}">
                 <TextBox x:Name="Card2TextBox"
                         Style="{StaticResource CardTextBoxStyle}"
-                        Text="Card 2"/>
+                        Text="Card 2"
+                        IsReadOnly="True"/>
             </Button>
             <Button Style="{StaticResource CardButtonStyle}" Click="CardButton_Click" Tag="{Binding}">
                 <TextBox x:Name="Card3TextBox"
                         Style="{StaticResource CardTextBoxStyle}"
-                        Text="Card 3"/>
+                        Text="Card 3"
+                        IsReadOnly="True"/>
             </Button>
         </WrapPanel>
     </Grid>
