@@ -71,7 +71,10 @@ namespace WordSnapWPFApp.Presentation.Pages
             {
                 NavigationService.Navigate(new TestPage(_cardsetId));
             }
-            NavigationService.Navigate(new LoginPage());
+            else
+            {
+                NavigationService.Navigate(new LoginPage());
+            }
         }
         private async void EditCardsetButton_Click(object sender, RoutedEventArgs e)
         {
@@ -85,6 +88,10 @@ namespace WordSnapWPFApp.Presentation.Pages
                     return;
                 }
                 NavigationService.Navigate(new EditOrCreateCardsetPage(_cardsetId));
+            }
+            else
+            {
+                NavigationService.Navigate(new LoginPage());
             }
         }
     }

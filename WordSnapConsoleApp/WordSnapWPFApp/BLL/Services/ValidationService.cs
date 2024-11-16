@@ -95,5 +95,55 @@ namespace WordSnapWPFApp.BLL.Services
 
             return isValid;
         }
+        public ValidationResult ValidateEnglishText(string text, bool withNumbersAndUnderscores = false)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return new ValidationResult(false, "Текст не може бути порожнім.");
+
+            if (text.Length > 100)
+                return new ValidationResult(false, "Текст не може перевищувати 100 символів.");
+
+            Regex regex;
+            if (withNumbersAndUnderscores)
+            {
+                regex = new Regex("^[a-zA-Z0-9_ ]+$");
+            }
+            else
+            {
+                regex = new Regex("^[a-zA-Z ]+$");
+            }
+
+            if (!regex.IsMatch(text))
+                return new ValidationResult(false, withNumbersAndUnderscores ? "Текст може містити лише англійські літери та пробіли." 
+                    : "Текст може містити лише англійські літери, пробіли, цифри та підкреслювання.");
+
+            return new ValidationResult(true);
+        }
+
+        public ValidationResult ValidateUkrainianText(string text, bool withNumbersAndUnderscores = false)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return new ValidationResult(false, "Текст не може бути порожнім.");
+
+            if (text.Length > 100)
+                return new ValidationResult(false, "Текст не може перевищувати 100 символів.");
+
+            Regex regex;
+            if (withNumbersAndUnderscores)
+            {
+                regex = new Regex("^[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ'0-9_ ]+$");
+            }
+            else
+            {
+                regex = new Regex("^[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ' ]+$");
+            }
+
+            if (!regex.IsMatch(text))
+                return new ValidationResult(false, withNumbersAndUnderscores ? "Текст може містити лише українські літери та пробіли."
+                    : "Текст може містити лише українські літери, пробіли, цифри та підкреслювання.");
+
+            return new ValidationResult(true);
+        }
+
     }
 }

@@ -10,10 +10,12 @@ namespace WordSnapWPFApp.Presentation.Pages
     public partial class EditOrCreateCardsetPage : Page
     {
         private readonly CardsetService _cardsetService = new CardsetService();
+        private readonly ValidationService _validationService = new ValidationService();
         private int? _cardsetId;
         private Cardset _currentCardset;
         private Card? _selectedCard;
         private ObservableCollection<Card> _observedCards;
+        private bool _isInitializing = true;
 
         public EditOrCreateCardsetPage(int? cardsetId = null)
         {
@@ -47,22 +49,41 @@ namespace WordSnapWPFApp.Presentation.Pages
                 {
                     Name = "Нова колекція",
                     IsPublic = false,
+                    UserRef = UserService.Instance.GetLoggedInUser().Id,
                     Cards = new List<Card>()
                 };
+                await _cardsetService.CreateCardsetAsync(_currentCardset);
+                _cardsetId = _currentCardset.Id; 
+
                 CardsetName.Text = _currentCardset.Name;
                 CardsetToggle.IsChecked = true;
             }
+
+            CardsetName.LostFocus += CardsetName_LostFocus;
+            _isInitializing = false;
+        }
+
+        private async void CardsetName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (_isInitializing || _currentCardset == null ||
+                _currentCardset.Name == CardsetName.Text) return;
+            var validationResult = _validationService.ValidateEnglishText(CardsetName.Text, true);
+            if (!validationResult.IsValid)
+            {
+                MessageBox.Show(validationResult.ErrorMessage, "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CardsetName.Text = _currentCardset.Name;
+                return;
+            }
+            _currentCardset.Name = CardsetName.Text;
+            await _cardsetService.UpdateCardsetAsync(_currentCardset);
         }
 
         private async void CardsetToggle_Checked(object sender, RoutedEventArgs e)
         {
-            if (_currentCardset != null)
+            if (_currentCardset != null && !_isInitializing)
             {
                 _currentCardset.IsPublic = !CardsetToggle.IsChecked;
-                if (_cardsetId.HasValue)
-                {
-                    await _cardsetService.UpdateCardsetAsync(_currentCardset);
-                }
+                await _cardsetService.UpdateCardsetAsync(_currentCardset);
             }
         }
 
@@ -100,6 +121,18 @@ namespace WordSnapWPFApp.Presentation.Pages
                 MessageBox.Show("Спершу введіть слово та його переклад.");
                 return;
             }
+            var englishValidation = _validationService.ValidateEnglishText(WordEnTextBox.Text);
+            var ukrainianValidation = _validationService.ValidateUkrainianText(WordUaTextBox.Text);
+            if (!englishValidation.IsValid)
+            {
+                MessageBox.Show(englishValidation.ErrorMessage, "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (!ukrainianValidation.IsValid)
+            {
+                MessageBox.Show(ukrainianValidation.ErrorMessage, "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             if (_selectedCard == null)
             {
@@ -107,19 +140,12 @@ namespace WordSnapWPFApp.Presentation.Pages
                 {
                     WordEn = WordEnTextBox.Text,
                     WordUa = WordUaTextBox.Text,
-                    Comment = CommentTextBox.Text,
-                    Id = _cardsetId ?? 0
+                    Comment = CommentTextBox.Text
                 };
 
-                if (_cardsetId.HasValue)
-                {
-                    await _cardsetService.AddCardToCardsetAsync(newCard, _cardsetId.Value);
-                    _observedCards.Add(newCard);
-                }
-                else
-                {
-                    _observedCards.Add(newCard);
-                }
+                await _cardsetService.AddCardToCardsetAsync(newCard, _cardsetId.Value);
+
+                _observedCards.Add(newCard);
             }
             else
             {
@@ -127,10 +153,7 @@ namespace WordSnapWPFApp.Presentation.Pages
                 _selectedCard.WordUa = WordUaTextBox.Text;
                 _selectedCard.Comment = CommentTextBox.Text;
 
-                if (_cardsetId.HasValue)
-                {
-                   await _cardsetService.UpdateCardAsync(_selectedCard);
-                }
+                await _cardsetService.UpdateCardAsync(_selectedCard);
 
                 var cardIndex = _observedCards.IndexOf(_selectedCard);
                 if (cardIndex != -1)
@@ -143,42 +166,6 @@ namespace WordSnapWPFApp.Presentation.Pages
             WordEnTextBox.Text = string.Empty;
             WordUaTextBox.Text = string.Empty;
             CommentTextBox.Text = string.Empty;
-        }
-
-        private async void SaveCardset_Click(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(CardsetName.Text))
-            {
-                MessageBox.Show("Введіть назву колекції.");
-                return;
-            }
-
-            _currentCardset.Name = CardsetName.Text;
-            _currentCardset.IsPublic = CardsetToggle.IsChecked ?? false;
-
-            if (_cardsetId.HasValue)
-            {
-                await _cardsetService.UpdateCardsetAsync(_currentCardset);
-            }
-            else
-            {
-                _currentCardset.UserRef = UserService.Instance.GetLoggedInUser().Id;
-                _currentCardset.Cards = new List<Card>(_observedCards);
-
-                await _cardsetService.CreateCardsetAsync(_currentCardset);
-            }
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (_cardsetId.HasValue)
-            {
-                NavigationService.Navigate(new CardsetPage(_cardsetId.Value, _currentCardset.Name));
-            }
-            else
-            {
-                NavigationService.GoBack();
-            }
         }
     }
 }
