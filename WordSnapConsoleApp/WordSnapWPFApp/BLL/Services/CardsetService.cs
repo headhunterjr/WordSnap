@@ -79,7 +79,7 @@ namespace WordSnapWPFApp.BLL.Services
             var cardset = await _repository.GetCardsetAsync(cardsetId);
             if (cardset == null)
             {
-                throw new InvalidOperationException("Цей кардсет не існує");
+                throw new InvalidOperationException("Ця колекція не існує");
             }
             return cardset;
         }
@@ -88,6 +88,54 @@ namespace WordSnapWPFApp.BLL.Services
             var cardset = await GetCardsetAsync(cardsetId);
             cardset.Name = name;
             return await _repository.UpdateCardsetAsync(cardset);
+        }
+        public async Task<int> CreateCardsetAsync(Cardset cardset)
+        {
+            return await _repository.AddCardsetAsync(cardset);
+        }
+
+        public async Task<int> UpdateCardsetAsync(Cardset cardset)
+        {
+            return await _repository.UpdateCardsetAsync(cardset);
+        }
+
+        public async Task<int> AddCardToCardsetAsync(Card card, int cardsetId)
+        {
+            card.CardsetRef = cardsetId;
+            return await _repository.AddCardAsync(card);
+        }
+
+        public async Task<int> UpdateCardAsync(Card card)
+        {
+            return await _repository.UpdateCardAsync(card);
+        }
+        public async Task<int> CreateOrUpdateCardsetAsync(Cardset cardset)
+        {
+            if (cardset.Id == 0)
+            {
+                return await _repository.AddCardsetAsync(cardset);
+            }
+            else
+            {
+                return await _repository.UpdateCardsetAsync(cardset);
+            }
+        }
+
+        public async Task<int> CreateOrUpdateCardAsync(Card card, int? cardsetId)
+        {
+            if (cardsetId.HasValue)
+            {
+                card.CardsetRef = cardsetId.Value;
+            }
+
+            if (card.Id == 0)
+            {
+                return await _repository.AddCardAsync(card);
+            }
+            else
+            {
+                return await _repository.UpdateCardAsync(card);
+            }
         }
     }
 }
