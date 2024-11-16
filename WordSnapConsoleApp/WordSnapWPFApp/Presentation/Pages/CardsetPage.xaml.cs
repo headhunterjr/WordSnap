@@ -67,7 +67,25 @@ namespace WordSnapWPFApp.Presentation.Pages
 
         private void TestButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new TestPage(_cardsetId));
+            if (UserService.Instance.IsUserLoggedIn)
+            {
+                NavigationService.Navigate(new TestPage(_cardsetId));
+            }
+            NavigationService.Navigate(new LoginPage());
+        }
+        private async void EditCardsetButton_Click(object sender, RoutedEventArgs e)
+        {
+            var user = UserService.Instance.GetLoggedInUser();
+            var cardset = await _cardsetService.GetCardsetAsync(_cardsetId);
+            if (user != null)
+            {
+                if (user.Id != cardset.UserRef)
+                {
+                    MessageBox.Show("Ви не є власником цієї колекції.");
+                    return;
+                }
+                NavigationService.Navigate(new EditOrCreateCardsetPage(_cardsetId));
+            }
         }
     }
 }

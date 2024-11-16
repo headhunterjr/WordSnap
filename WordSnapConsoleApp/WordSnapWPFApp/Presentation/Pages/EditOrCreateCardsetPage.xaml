@@ -1,0 +1,313 @@
+﻿<Page x:Class="WordSnapWPFApp.Presentation.Pages.EditOrCreateCardsetPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="EditOrCreateCardsetPage">
+    <Page.Resources>
+        <Style x:Key="SearchBoxStyle" TargetType="TextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="White" 
+                                CornerRadius="20"
+                                BorderThickness="1"
+                                BorderBrush="#E0E0E0"
+                                Padding="15,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}"
+                                        BorderThickness="0"
+                                        Background="Transparent"
+                                        VerticalAlignment="Center"/>
+                                <Image Grid.Column="1" 
+                                      Source="pack://application:,,,/Images/search.png"
+                                      Width="16" Height="16"
+                                      Opacity="0.5"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ModernToggleButtonStyle" TargetType="ToggleButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Width="50" Height="25" 
+                                CornerRadius="12.5" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="#E0E0E0"
+                                BorderThickness="1">
+                            <Grid>
+                                <Ellipse x:Name="Switch" 
+                                         Width="21" Height="21" 
+                                         Fill="White"
+                                         HorizontalAlignment="Left"
+                                         Margin="2,0,0,0">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect BlurRadius="4" 
+                                                         ShadowDepth="1" 
+                                                         Opacity="0.3"/>
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Switch" Property="HorizontalAlignment" Value="Right"/>
+                                <Setter TargetName="Switch" Property="Margin" Value="0,0,2,0"/>
+                                <Setter Property="Background" Value="#808080"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter Property="Background" Value="#CCCCCC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="AddCardButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="Height" Value="100"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="White" 
+                                CornerRadius="15"
+                                BorderThickness="1"
+                                BorderBrush="#E0E0E0">
+                            <Grid>
+                                <Ellipse Width="40" Height="40" 
+                                         Fill="#808080"
+                                         Stroke="Transparent">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect BlurRadius="4" 
+                                                         ShadowDepth="1" 
+                                                         Opacity="0.3"/>
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                                <TextBlock Text="+" 
+                                           FontSize="40"
+                                           FontWeight="Light"
+                                           Foreground="White"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Top"
+                                           Cursor="Hand" Margin="0,16,0,0"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ModernTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="280"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="White"
+                                CornerRadius="10"
+                                BorderThickness="1"
+                                BorderBrush="#E0E0E0">
+                            <Grid>
+                                <ScrollViewer x:Name="PART_ContentHost" 
+                                             Margin="10,0"
+                                             VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ModernLabelStyle" TargetType="Label">
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,10,0,0"/>
+        </Style>
+        <Style x:Key="CardButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="Height" Value="100"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="10" 
+                        ShadowDepth="1" 
+                        Opacity="0.2"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="15" 
+                    Cursor="Hand"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="CardTextBoxStyle" TargetType="TextBox">
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Foreground" Value="#333333"/>
+        </Style>
+        <Style x:Key="TestButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0,0,20,20"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="#808080"
+                        CornerRadius="10"
+                        Cursor="Hand">
+                            <TextBlock Text="{TemplateBinding Content}"
+                               Foreground="White"
+                               FontSize="16"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="#F5F5F5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Column -->
+        <Grid Grid.Column="0" Margin="10,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- For name -->
+                <RowDefinition Height="Auto"/>
+                <!-- For toggle -->
+                <RowDefinition Height="*"/>
+                <!-- For card list -->
+            </Grid.RowDefinitions>
+
+            <!-- Cardset Name -->
+            <TextBox x:Name="CardsetName"
+                     Text="Змінюване ім'я" 
+                     Style="{StaticResource ModernTextBoxStyle}"
+                     FontSize="20"
+                     FontWeight="SemiBold"
+                     Height="50"
+                     Margin="0,3,10,3" />
+
+            <!-- Toggle -->
+            <StackPanel Grid.Row="1" 
+                        Orientation="Horizontal" 
+                        Margin="0,10,0,10"
+                        HorizontalAlignment="Left">
+                <TextBlock Text="Приватна" 
+                           VerticalAlignment="Center"
+                           Margin="0,0,10,0"
+                           FontSize="14"/>
+                <ToggleButton x:Name="CardsetToggle"
+                             Style="{StaticResource ModernToggleButtonStyle}"
+                             Checked="CardsetToggle_Checked"
+                             Unchecked="CardsetToggle_Checked"
+                             IsChecked="True"/>
+            </StackPanel>
+
+            <!-- Cards List -->
+            <ScrollViewer Grid.Row="2" 
+                          VerticalScrollBarVisibility="Auto" 
+                          HorizontalScrollBarVisibility="Disabled">
+                <StackPanel>
+                    <ListBox x:Name="CardsListBox"
+                             Background="Transparent"
+                             BorderThickness="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource CardButtonStyle}"
+                                        Click="CardButton_Click">
+                                    <TextBox Text="{Binding WordEn}"
+                                             Style="{StaticResource CardTextBoxStyle}"
+                                             IsReadOnly="False"/>
+                                </Button>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Button Style="{StaticResource AddCardButtonStyle}"
+                            Click="AddNewCard_Click"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <!-- Right Column -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Edit Card Section -->
+            <StackPanel Grid.Row="1" 
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Center">
+                <Border Width="340" 
+                        Background="White"
+                        CornerRadius="30"
+                        Padding="20"
+                        BorderThickness="1"
+                        BorderBrush="#E0E0E0">
+                    <StackPanel>
+                        <Label Content="Слово англійською"
+                               Style="{StaticResource ModernLabelStyle}"/>
+                        <TextBox x:Name="WordEnTextBox"
+                                 Text="{Binding SelectedCard.WordEn}"
+                                 Style="{StaticResource ModernTextBoxStyle}"/>
+
+                        <Label Content="Слово українською"
+                               Style="{StaticResource ModernLabelStyle}"/>
+                        <TextBox x:Name="WordUaTextBox"
+                                 Text="{Binding SelectedCard.WordUa}"
+                                 Style="{StaticResource ModernTextBoxStyle}"/>
+
+                        <Label Content="Коментар"
+                               Style="{StaticResource ModernLabelStyle}"/>
+                        <TextBox x:Name="CommentTextBox"
+                                 Text="{Binding SelectedCard.Comment}"
+                                 Style="{StaticResource ModernTextBoxStyle}"/>
+                    </StackPanel>
+                </Border>
+
+                <Button Content="Додати"
+                        Style="{StaticResource TestButtonStyle}"
+                        Margin="0,20,0,0"
+                        HorizontalAlignment="Center"
+                        Click="AddOrUpdateCardButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

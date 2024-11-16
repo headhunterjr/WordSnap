@@ -13,6 +13,9 @@
     <Compile Update="Presentation\Pages\CardsetPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Presentation\Pages\EditOrCreateCardsetPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Presentation\Pages\LoginPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -37,6 +40,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Presentation\Pages\CardsetPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Presentation\Pages\EditOrCreateCardsetPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Presentation\Pages\LoginPage.xaml">

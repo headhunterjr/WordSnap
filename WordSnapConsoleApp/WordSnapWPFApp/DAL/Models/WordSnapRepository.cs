@@ -83,7 +83,7 @@ namespace WordSnapWPFApp.DAL.Models
             var cardset = await _context.Cardsets.FirstOrDefaultAsync(cs => cs.Id == cardsetId);
             if (cardset == null)
             {
-                throw new InvalidOperationException("Кардсет не знайдено.");
+                throw new InvalidOperationException("Колекцію не знайдено.");
             }
             cardset.IsPublic = !cardset.IsPublic;
             return await _context.SaveChangesAsync();
@@ -105,7 +105,7 @@ namespace WordSnapWPFApp.DAL.Models
             var cardset = await _context.Cardsets.FirstOrDefaultAsync(cs => cs.Id == cardsetId);
             if (cardset == null)
             {
-                throw new InvalidOperationException("Кардсет не знайдено.");
+                throw new InvalidOperationException("Колекцію не знайдено.");
             }
             _context.Cardsets.Remove(cardset);
             return await _context.SaveChangesAsync();
@@ -132,6 +132,23 @@ namespace WordSnapWPFApp.DAL.Models
         {
             return await _context.SaveChangesAsync();
         }
+
+        public async Task<Cardset?> GetCardsetAsync(int cardsetId)
+        {
+            var cardset = await _context.Cardsets.FirstOrDefaultAsync(cs => cs.Id == cardsetId);
+            return cardset;
+        }
+        public async Task<int> UpdateCardsetAsync(Cardset cardset)
+        {
+            _context.Cardsets.Update(cardset);
+            return await _context.SaveChangesAsync();
+        }
+        public async Task<int> UpdateCardAsync(Card card)
+        {
+            _context.Cards.Update(card);
+            return await _context.SaveChangesAsync();
+        }
+
     }
 
 }
