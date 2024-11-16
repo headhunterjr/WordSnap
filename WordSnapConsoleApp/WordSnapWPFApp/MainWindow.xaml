@@ -19,26 +19,22 @@
             </Setter>
         </Style>
         <Style x:Key="ButtonStyle" TargetType="Button">
-            <Setter Property="Width" Value="60"/>
+            <Setter Property="Width" Value="120"/>
             <Setter Property="Height" Value="40"/>
-            <Setter Property="Margin" Value="10,0,0,0"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,20,20"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="Content" Value="Пошук"/>
-            <Setter Property="FontSize" Value="12"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="#808080"
-                Cursor="Hand"
-                Width="{TemplateBinding Width}"
-                Height="{TemplateBinding Height}"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
+                        CornerRadius="10"
+                        Cursor="Hand">
                             <TextBlock Text="{TemplateBinding Content}"
-                                Foreground="White"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center"/>
+                               Foreground="White"
+                               FontSize="16"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -46,7 +42,7 @@
         </Style>
     </Window.Resources>
     <DockPanel>
-        <Grid DockPanel.Dock="Top" Background="#333333" Height="50">
+        <Grid DockPanel.Dock="Top" Background="#333333" Height="60">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -71,6 +67,8 @@
                     Foreground="#666666" 
                     Click="LoginButton_Click"
                     Visibility="Visible" 
+                    Width="80"
+                    Height="30"
                     Margin="10"/>
         </Grid>
         <Grid DockPanel.Dock="Top">
@@ -80,11 +78,11 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <StackPanel x:Name="LeftPanel" Visibility="Collapsed" Width="150" Background="#F0F0F0">
-                <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Головна" Click="HomeButton_Click" Margin="10,5"/>
-                <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Мої картки" Click="OwnedCardsetsLibraryButton_Click" Margin="10,5"/>
-                <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Збережені" Click="AccessedCardsetLibraryButton_Click" Margin="10,5"/>
-                <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Вийти" Click="LogoutButton_Click" Margin="10,5"/>
+                <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Головна" Click="HomeButton_Click" Margin="10,10"/>
+                <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Мої картки" Click="OwnedCardsetsLibraryButton_Click" Margin="10,10"/>
+                <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch" Width="100" Content="Збережені" Click="AccessedCardsetLibraryButton_Click" Margin="10,10"/>
             </StackPanel>
+            <Button x:Name="ExitButton" Style="{StaticResource ButtonStyle}" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Width="100" Content="Вийти" Click="LogoutButton_Click" Margin="10,30"/>
             <Frame Grid.Column="1" 
                    x:Name="MainFrame" 
                    NavigationUIVisibility="Hidden" Grid.ColumnSpan="2"/>
