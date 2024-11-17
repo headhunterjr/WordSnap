@@ -200,6 +200,18 @@ namespace WordSnapWPFApp.DAL.Models
             var card = await _context.Cards.FirstOrDefaultAsync(c => c.Id == cardId);
             return card;
         }
+
+        public async Task<bool> DeleteUsersCardset(int userscardsetId)
+        {
+            var userscardset = await _context.Userscardsets.FirstOrDefaultAsync(uc => uc.Id == userscardsetId);
+            if (userscardset != null)
+            {
+                _context.Userscardsets.Remove(userscardset);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
     }
 
 }

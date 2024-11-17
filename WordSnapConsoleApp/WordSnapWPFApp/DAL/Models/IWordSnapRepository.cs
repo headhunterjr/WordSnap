@@ -34,5 +34,6 @@ namespace WordSnapWPFApp.DAL.Models
         public Task<bool> DeleteCardAsync(int cardId);
         public Task<bool> IsCardsetOwnedByUserAsync(int userId, int cardsetId);
         public Task<Card?> GetCardAsync(int cardId);
+        public Task<bool> DeleteUsersCardset(int userscardsetId);
     }
 }

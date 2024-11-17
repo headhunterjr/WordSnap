@@ -132,17 +132,38 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Margin="10,10">
+                <Button Style="{StaticResource CardButtonStyle}" 
+                        IsHitTestVisible="False" 
+                        Height="50" 
+                        Margin="-4,3,10,3">
+                    <TextBlock x:Name="CardsetName" 
+                               Text="Placeholder" 
+                               FontSize="20" 
+                               FontWeight="SemiBold" 
+                               Foreground="#333333" />
+                </Button>
 
-            <Button Style="{StaticResource CardButtonStyle}" 
-                    IsHitTestVisible="False" 
-                    Height="50" 
-                    Margin="-4,3,10,3">
-                <TextBlock x:Name="CardsetName" 
-                          Text="Placeholder" 
-                          FontSize="20" 
-                          FontWeight="SemiBold" 
-                          Foreground="#333333" />
-            </Button>
+                <Button Grid.Row="0"
+                        Height="32"
+                        Width="32"
+                        Margin="6,12,0,12"
+                        HorizontalAlignment="Left"
+                        Cursor="Hand"
+                        Click="BackButton_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="Transparent">
+                                <Path Data="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"
+                                      Fill="#808080"
+                                      Width="24"
+                                      Height="24"
+                                      Stretch="Uniform"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
 
             <ScrollViewer Grid.Row="1" 
                          VerticalScrollBarVisibility="Auto" 

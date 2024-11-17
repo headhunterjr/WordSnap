@@ -49,6 +49,11 @@ namespace WordSnapWPFApp.Presentation.Pages
         {
             if (sender is Button button && button.Tag is string wordEn)
             {
+                foreach (var btn in FindVisualChildren<Button>(this))
+                {
+                    if (btn.BorderBrush == Brushes.Blue)
+                        btn.BorderBrush = Brushes.Transparent;
+                }
                 _selectedWordEn = wordEn;
                 button.BorderBrush = Brushes.Blue;
             }
@@ -71,7 +76,8 @@ namespace WordSnapWPFApp.Presentation.Pages
                         if (wordEnButton != null) wordEnButton.IsEnabled = false;
 
                         button.BorderBrush = Brushes.Green;
-                        wordEnButton.BorderBrush = Brushes.Green;
+                        if (wordEnButton != null)
+                            wordEnButton.BorderBrush = Brushes.Green;
                     }
                     else
                     {
@@ -83,6 +89,10 @@ namespace WordSnapWPFApp.Presentation.Pages
                     if (_viewModel.IsTestComplete)
                     {
                         await SaveResultsAsync();
+
+                        MessageBox.Show($"Вітання! Ви пройшли тест з результатом {Math.Round(_viewModel.Accuracy * 100, 2)}%!");
+
+                        ResetTestUI();
                     }
                 }
                 finally
@@ -91,6 +101,12 @@ namespace WordSnapWPFApp.Presentation.Pages
                 }
             }
         }
+
+        private void ResetTestUI()
+        {
+            _selectedWordEn = null;
+        }
+
 
         private async Task SaveResultsAsync()
         {
@@ -108,8 +124,15 @@ namespace WordSnapWPFApp.Presentation.Pages
 
         private Button FindButtonByText(string text)
         {
-            return FindVisualChildren<Button>(this).FirstOrDefault(b => b.Content.ToString() == text);
+            return FindVisualChildren<Button>(this).FirstOrDefault(b =>
+            {
+                if (b.Content is string buttonText)
+                    return buttonText == text;
+
+                return false;
+            });
         }
+
 
         private IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
         {
