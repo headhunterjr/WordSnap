@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
 using WordSnapWPFApp.DAL.Models;
 
 namespace WordSnapWPFApp.BLL.Services
@@ -153,6 +154,12 @@ namespace WordSnapWPFApp.BLL.Services
             };
             return await _repository.AddCardsetToSavedLibraryAsync(userscardset);
         }
+
+        public async Task<Userscardset?> GetUserscardsetAsync(int userId, int cardsetId)
+        {
+            var userscardset = await _repository.GetUserscardsetAsync(userId, cardsetId);
+            return userscardset;
+        }
         public async Task DeleteCardsetAsync(int userId, int cardsetId)
         {
             var isOwner = await _repository.IsCardsetOwnedByUserAsync(userId, cardsetId);
@@ -187,6 +194,24 @@ namespace WordSnapWPFApp.BLL.Services
             {
                 throw new InvalidOperationException($"Не вдалося видалити картку.");
             }
+        }
+        public async Task DeleteUserscardsetAsync(int userId, int cardsetId)
+        {
+            var userscardset = await _repository.GetUserscardsetAsync(userId, cardsetId);
+            var user = UserService.Instance.GetLoggedInUser();
+            if (userscardset == null)
+            {
+                throw new InvalidOperationException("Запис не знайдено.");
+            }
+            if (user != null && user.Id == userId)
+            {
+                var success = await _repository.DeleteUsersCardset(userscardset.Id);
+                if (!success)
+                {
+                    throw new InvalidOperationException("Не вдалося видалити запис");
+                }
+            }
+
         }
     }
 }

@@ -40,7 +40,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             var cards = await _cardsetService.GetCardsOfCardsetAsync(_cardsetId);
             CardsListBox.ItemsSource = cards;
             CardsetName.Text = _cardsetName;
-        }
+            }
 
         private void CardButton_Click(object sender, RoutedEventArgs e)
         {
@@ -66,11 +66,29 @@ namespace WordSnapWPFApp.Presentation.Pages
             }
         }
 
-        private void TestButton_Click(object sender, RoutedEventArgs e)
+        private async void TestButton_Click(object sender, RoutedEventArgs e)
         {
-            if (UserService.Instance.IsUserLoggedIn)
+            var user = UserService.Instance.GetLoggedInUser();
+            var cardset = await _cardsetService.GetCardsetAsync(_cardsetId);
+            if (user != null)
             {
-                NavigationService.Navigate(new TestPage(_cardsetId));
+                if (user.Id != cardset.UserRef)
+                {
+                    try
+                    {
+                        await _cardsetService.GetUserscardsetAsync(user.Id, _cardsetId);
+                        NavigationService.Navigate(new TestPage(_cardsetId));
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                }
+                else
+                {
+                    NavigationService.Navigate(new TestPage(_cardsetId));
+                }
             }
             else
             {
@@ -164,6 +182,11 @@ namespace WordSnapWPFApp.Presentation.Pages
                 EditCardsetButton.Visibility = Visibility.Hidden;
                 AddCardsetToCollectionButton.Visibility = Visibility.Hidden;
             }
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.GoBack();
         }
     }
 }
