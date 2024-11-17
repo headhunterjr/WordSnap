@@ -244,6 +244,19 @@
                             <DataTemplate>
                                 <Button Style="{StaticResource CardButtonStyle}"
                                         Click="CardButton_Click">
+                                    <Button.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Видалити"
+                                                      Click="DeleteCardMenuItem_Click">
+                                                <MenuItem.Icon>
+                                                    <Image Source="pack://application:,,,/Presentation/Images/bin32.png"
+                                                           Width="16"
+                                                           Height="16"
+                                                           Opacity="0.7"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </Button.ContextMenu>
                                     <TextBox Text="{Binding WordEn}"
                                              Style="{StaticResource CardTextBoxStyle}"
                                              IsReadOnly="True"/>
@@ -266,6 +279,25 @@
             <StackPanel Grid.Row="1" 
                         VerticalAlignment="Center" 
                         HorizontalAlignment="Center">
+                <Button x:Name="DeleteCardButton"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Width="32"
+                        Height="32"
+                        Margin="0,10,10,0"
+                        Click="DeleteCardButton_Click"
+                        Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="Transparent">
+                                <Image Source="pack://application:,,,/Presentation/Images/bin64.png"
+                                       Width="30"
+                                       Height="30"
+                                       Opacity="0.7"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
                 <Border Width="340" 
                         Background="White"
                         CornerRadius="30"

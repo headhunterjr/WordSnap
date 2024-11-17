@@ -170,31 +170,78 @@ namespace WordSnapWPFApp.Presentation.Pages
         private async void DeleteCardButton_Click(object sender, RoutedEventArgs e)
         {
             var user = UserService.Instance.GetLoggedInUser();
-            if (user != null)
+            if (user == null)
+            {
+                NavigationService.Navigate(new LoginPage());
+                return;
+            }
+
+            if (_selectedCard == null)
+            {
+                MessageBox.Show("Спочатку виберіть картку для видалення.",
+                    "Попередження",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            await TryDeleteCardAsync(_selectedCard, user.Id);
+        }
+
+        private async void DeleteCardMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var user = UserService.Instance.GetLoggedInUser();
+            if (user == null)
+            {
+                NavigationService.Navigate(new LoginPage());
+                return;
+            }
+
+            var menuItem = sender as MenuItem;
+            var contextMenu = menuItem?.Parent as ContextMenu;
+            var button = contextMenu?.PlacementTarget as Button;
+            var cardToDelete = button?.DataContext as Card;
+
+            if (cardToDelete == null)
+            {
+                MessageBox.Show("Не вдалося знайти картку для видалення.",
+                    "Помилка",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+
+            await TryDeleteCardAsync(cardToDelete, user.Id);
+        }
+
+        private async Task TryDeleteCardAsync(Card cardToDelete, int userId)
+        {
+            var result = MessageBox.Show("Ви впевнені, що хочете видалити цю картку?",
+                "Підтвердження",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
             {
                 try
                 {
-                    var result = MessageBox.Show("Ви впевнені, що хочете видалити цю картку?",
-                        "Підтвердження",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Question);
+                    await _cardsetService.DeleteCardAsync(userId, cardToDelete.Id);
+                    _observedCards.Remove(cardToDelete);
 
-                    if (result == MessageBoxResult.Yes)
+                    if (_selectedCard?.Id == cardToDelete.Id)
                     {
-                        int cardId = ((Button)sender).Tag as int? ?? throw new InvalidOperationException("ID картки не знайдено.");
-                        await _cardsetService.DeleteCardAsync(user.Id, cardId);
-                        NavigationService.Refresh();
+                        _selectedCard = null;
+                        WordEnTextBox.Text = string.Empty;
+                        WordUaTextBox.Text = string.Empty;
+                        CommentTextBox.Text = string.Empty;
                     }
                 }
-                catch (InvalidOperationException ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-            else
-            {
-                NavigationService.Navigate(new LoginPage());
-            }
         }
+
     }
 }
