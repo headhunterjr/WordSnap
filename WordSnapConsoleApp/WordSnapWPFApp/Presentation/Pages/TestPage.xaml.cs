@@ -62,12 +62,10 @@ namespace WordSnapWPFApp.Presentation.Pages
             {
                 try
                 {
-                    // Check if the selected English word matches the Ukrainian word
                     var isCorrect = _viewModel.MakeGuess(_selectedWordEn, wordUa);
 
                     if (isCorrect)
                     {
-                        // Correct match
                         button.IsEnabled = false;
                         var wordEnButton = FindButtonByText(_selectedWordEn);
                         if (wordEnButton != null) wordEnButton.IsEnabled = false;
@@ -77,13 +75,11 @@ namespace WordSnapWPFApp.Presentation.Pages
                     }
                     else
                     {
-                        // Incorrect match
                         await AnimateBorder(button, Brushes.Red);
                         var wordEnButton = FindButtonByText(_selectedWordEn);
                         if (wordEnButton != null) await AnimateBorder(wordEnButton, Brushes.Red);
                     }
 
-                    // Check if the test is complete
                     if (_viewModel.IsTestComplete)
                     {
                         await SaveResultsAsync();

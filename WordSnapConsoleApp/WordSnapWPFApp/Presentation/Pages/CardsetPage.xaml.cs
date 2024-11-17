@@ -32,6 +32,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             _cardsetId = cardsetId;
             _cardsetName = cardsetName;
             InitializeCards();
+            UpdateUIForLoginState();
         }
 
         private async void InitializeCards()
@@ -92,6 +93,76 @@ namespace WordSnapWPFApp.Presentation.Pages
             else
             {
                 NavigationService.Navigate(new LoginPage());
+            }
+        }
+
+        private async void AddCardsetToCollectionButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (UserService.Instance.IsUserLoggedIn)
+            {
+                try
+                {
+                    int userId = UserService.Instance.GetLoggedInUser().Id;
+                    int cardsetId = _cardsetId;
+                    await _cardsetService.AddCardsetToSavedLibraryAsync(userId, cardsetId);
+                }
+                catch(InvalidOperationException ex)
+                {
+                    MessageBox.Show(ex.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                NavigationService.Navigate(new LoginPage());
+            }
+        }
+
+        private async void DeleteCardsetButton_Click(object sender, RoutedEventArgs e)
+        {
+            var user = UserService.Instance.GetLoggedInUser();
+            var cardset = await _cardsetService.GetCardsetAsync(_cardsetId);
+            if (user != null && user.Id == cardset.UserRef)
+            {
+                try
+                {
+                    var result = MessageBox.Show("Ви впевнені, що хочете видалити цю колекцію?",
+                        "Підтвердження",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        int userId = user.Id;
+                        await _cardsetService.DeleteCardsetAsync(userId, _cardsetId);
+                        NavigationService.Navigate(new OwnedCardsetLibraryPage());
+                    }
+                }
+                catch (InvalidOperationException ex)
+                {
+                    MessageBox.Show(ex.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Ви не є власником цієї колекції.");
+            }
+        }
+
+        public void UpdateUIForLoginState()
+        {
+            if (UserService.Instance.IsUserLoggedIn)
+            {
+                DeleteCardsetButton.Visibility = Visibility.Visible;
+                ActionButton.Visibility = Visibility.Visible;
+                EditCardsetButton.Visibility = Visibility.Visible;
+                AddCardsetToCollectionButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                DeleteCardsetButton.Visibility = Visibility.Hidden;
+                ActionButton.Visibility = Visibility.Hidden;
+                EditCardsetButton.Visibility = Visibility.Hidden;
+                AddCardsetToCollectionButton.Visibility = Visibility.Hidden;
             }
         }
     }

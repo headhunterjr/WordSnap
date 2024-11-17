@@ -149,6 +149,57 @@ namespace WordSnapWPFApp.DAL.Models
             return await _context.SaveChangesAsync();
         }
 
+        public async Task<int> AddCardsetToSavedLibraryAsync(Userscardset userscardset)
+        {
+            _context.Userscardsets.Add(userscardset);
+            return await _context.SaveChangesAsync();
+        }
+        public async Task<Userscardset?> GetUserscardsetAsync(int userId, int cardsetId)
+        {
+            var userscardset = await _context.Userscardsets.FirstOrDefaultAsync(uc => uc.UserRef == userId && uc.CardsetRef == cardsetId);
+            return userscardset;
+        }
+        public async Task<bool> DeleteCardsetAsync(int cardsetId)
+        {
+            var cardset = await GetCardsetAsync(cardsetId);
+
+            if (cardset != null)
+            {
+                _context.Cardsets.Remove(cardset);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> DeleteCardAsync(int cardId)
+        {
+            var card = await GetCardAsync(cardId);
+
+            if (card != null)
+            {
+                _context.Cards.Remove(card);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> IsCardsetOwnedByUserAsync(int userId, int cardsetId)
+        {
+            var cardset = await GetCardsetAsync(cardsetId);
+            if (cardset == null)
+            {
+                throw new InvalidOperationException("Колекцію не знайдено");
+            }
+            return cardset.UserRef == userId;
+        }
+
+        public async Task<Card?> GetCardAsync(int cardId)
+        {
+            var card = await _context.Cards.FirstOrDefaultAsync(c => c.Id == cardId);
+            return card;
+        }
     }
 
 }

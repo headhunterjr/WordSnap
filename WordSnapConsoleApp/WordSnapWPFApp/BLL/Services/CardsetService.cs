@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using WordSnapWPFApp.DAL.Models;
 
 namespace WordSnapWPFApp.BLL.Services
@@ -135,6 +136,56 @@ namespace WordSnapWPFApp.BLL.Services
             else
             {
                 return await _repository.UpdateCardAsync(card);
+            }
+        }
+        public async Task<int> AddCardsetToSavedLibraryAsync(int userId, int cardsetId)
+        {
+            var existingUserscardset = await _repository.GetUserscardsetAsync(userId, cardsetId);
+            if (existingUserscardset != null)
+            {
+                throw new InvalidOperationException($"Колекція вже є серед збережених.");
+            }
+
+            Userscardset userscardset = new Userscardset
+            {
+                UserRef = userId,
+                CardsetRef = cardsetId,
+            };
+            return await _repository.AddCardsetToSavedLibraryAsync(userscardset);
+        }
+        public async Task DeleteCardsetAsync(int userId, int cardsetId)
+        {
+            var isOwner = await _repository.IsCardsetOwnedByUserAsync(userId, cardsetId);
+            if (!isOwner)
+            {
+                throw new InvalidOperationException($"Ви не є власником цієї колекції.");
+            }
+
+            var success = await _repository.DeleteCardsetAsync(cardsetId);
+            if (!success)
+            {
+                throw new InvalidOperationException($"Не вдалося видалити колекцію.");
+            }
+        }
+
+        public async Task DeleteCardAsync(int userId, int cardId)
+        {
+            var card = await _repository.GetCardAsync(cardId);
+            if (card == null)
+            {
+                throw new InvalidOperationException($"Картку не знайдено.");
+            }
+
+            var isOwner = await _repository.IsCardsetOwnedByUserAsync(userId, card.CardsetRef);
+            if (!isOwner)
+            {
+                throw new InvalidOperationException($"Ви не є власником цієї колекції.");
+            }
+
+            var success = await _repository.DeleteCardAsync(cardId);
+            if (!success)
+            {
+                throw new InvalidOperationException($"Не вдалося видалити картку.");
             }
         }
     }

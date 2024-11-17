@@ -28,5 +28,11 @@ namespace WordSnapWPFApp.DAL.Models
         public Task<Cardset?> GetCardsetAsync(int cardsetId);
         public Task<int> UpdateCardsetAsync(Cardset cardset);
         public Task<int> UpdateCardAsync(Card card);
+        public Task<int> AddCardsetToSavedLibraryAsync(Userscardset userscardset);
+        public Task<Userscardset?> GetUserscardsetAsync(int userId, int cardsetId);
+        public Task<bool> DeleteCardsetAsync(int cardsetId);
+        public Task<bool> DeleteCardAsync(int cardId);
+        public Task<bool> IsCardsetOwnedByUserAsync(int userId, int cardsetId);
+        public Task<Card?> GetCardAsync(int cardId);
     }
 }

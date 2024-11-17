@@ -98,6 +98,28 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="DeleteCardsetButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0,0,20,20"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="Red"
+                        CornerRadius="10"
+                        Cursor="Hand">
+                            <TextBlock Text="{TemplateBinding Content}"
+                               Foreground="White"
+                               FontSize="16"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
     <Grid Background="#F5F5F5">
         <Grid.ColumnDefinitions>
@@ -111,15 +133,21 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Button Style="{StaticResource CardButtonStyle}" IsHitTestVisible="False" Height="50" Margin="-4,3,10,3">
+            <Button Style="{StaticResource CardButtonStyle}" 
+                    IsHitTestVisible="False" 
+                    Height="50" 
+                    Margin="-4,3,10,3">
                 <TextBlock x:Name="CardsetName" 
-                           Text="Placeholder" 
-                           FontSize="20" 
-                           FontWeight="SemiBold" 
-                           Foreground="#333333" />
+                          Text="Placeholder" 
+                          FontSize="20" 
+                          FontWeight="SemiBold" 
+                          Foreground="#333333" />
             </Button>
 
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,10,0,0">
+            <ScrollViewer Grid.Row="1" 
+                         VerticalScrollBarVisibility="Auto" 
+                         HorizontalScrollBarVisibility="Disabled" 
+                         Margin="0,10,0,0">
                 <ListBox x:Name="CardsListBox" 
                          Background="Transparent" 
                          HorizontalContentAlignment="Center" 
@@ -127,11 +155,14 @@
                          BorderThickness="0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Button Style="{StaticResource CardButtonStyle}" Click="CardButton_Click">
-                                <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Button Style="{StaticResource CardButtonStyle}" 
+                                    Click="CardButton_Click">
+                                <StackPanel Orientation="Vertical" 
+                                          VerticalAlignment="Center" 
+                                          HorizontalAlignment="Center">
                                     <TextBox Text="{Binding WordEn}" 
-                                             Style="{StaticResource CardTextBoxStyle}" 
-                                             IsReadOnly="True" />
+                                            Style="{StaticResource CardTextBoxStyle}" 
+                                            IsReadOnly="True" />
                                 </StackPanel>
                             </Button>
                         </DataTemplate>
@@ -144,35 +175,77 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Button x:Name="ActionButton"
-                    Margin="20"
-                    Content="Тест"
-                    Style="{StaticResource TestButtonStyle}"
-                    Click="TestButton_Click"/>
+            <Grid Grid.Row="0" 
+                  Margin="20,20,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="DeleteCardsetButton"
+                        Grid.Column="0"
+                        Content="Видалити"
+                        Style="{StaticResource DeleteCardsetButtonStyle}"
+                        Click="DeleteCardsetButton_Click"
+                        Visibility="Collapsed"
+                        HorizontalAlignment="Left"/>
+
+                <Button x:Name="ActionButton"
+                        Grid.Column="1"
+                        Content="Тест"
+                        Style="{StaticResource TestButtonStyle}"
+                        Visibility="Collapsed"
+                        HorizontalAlignment="Right"
+                        Click="TestButton_Click"/>
+            </Grid>
 
             <StackPanel Grid.Row="1" 
                         Orientation="Vertical" 
-                        VerticalAlignment="Center">
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Center">
                 <Border Height="200" 
                         Width="340" 
                         Margin="0,10" 
                         CornerRadius="30" 
                         Background="#CCCCCC" 
                         MouseDown="CardInfo_Click">
-                    <TextBlock x:Name="CardInfo" 
-                               HorizontalAlignment="Center" 
-                               VerticalAlignment="Center" 
-                               FontSize="20" 
-                               Margin="20" />
+                    <Grid>
+                        <TextBlock x:Name="CardInfo" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" 
+                                   FontSize="20" 
+                                   Margin="20" />
+                    </Grid>
                 </Border>
             </StackPanel>
-            <Button x:Name="EditCardsetButton"
-                        Margin="0,320,20,10"
+
+            <Grid Grid.Row="2" 
+                  Margin="20,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="AddCardsetToCollectionButton"
+                        Grid.Column="0"
+                        Content="Додати до колекції"
+                        Style="{StaticResource TestButtonStyle}"
+                        Width="160"
+                        Visibility="Collapsed"
+                        HorizontalAlignment="Left"
+                        Click="AddCardsetToCollectionButton_Click"/>
+
+                <Button x:Name="EditCardsetButton"
+                        Grid.Column="1"
                         Content="Змінити"
                         Style="{StaticResource TestButtonStyle}"
-                        Click="EditCardsetButton_Click" Grid.Row="1"/>
+                        Visibility="Collapsed"
+                        HorizontalAlignment="Right"
+                        Click="EditCardsetButton_Click"/>
+            </Grid>
         </Grid>
     </Grid>
 </Page>
