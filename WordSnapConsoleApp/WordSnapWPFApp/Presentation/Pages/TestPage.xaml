@@ -9,7 +9,6 @@
       Title="TestPage">
 
     <Page.Resources>
-        <!-- Test Button Style (similar to CardButtonStyle but adapted for test purposes) -->
         <Style x:Key="TestButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="White"/>
             <Setter Property="Margin" Value="5"/>
@@ -46,7 +45,6 @@
             </Setter>
         </Style>
 
-        <!-- Back Button Style -->
         <Style x:Key="BackButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="100"/>
             <Setter Property="Height" Value="40"/>
@@ -77,19 +75,16 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Back Button -->
         <Button Content="Back" 
                 Style="{StaticResource BackButtonStyle}"
                 Click="BackButton_Click"/>
 
-        <!-- Word Lists -->
         <Grid Grid.Row="1" Margin="0,10,0,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- WordEn Buttons -->
             <ScrollViewer Grid.Column="0" 
                          VerticalScrollBarVisibility="Auto" 
                          HorizontalScrollBarVisibility="Disabled">
@@ -106,7 +101,6 @@
                 </ItemsControl>
             </ScrollViewer>
 
-            <!-- WordUa Buttons -->
             <ScrollViewer Grid.Column="1" 
                          VerticalScrollBarVisibility="Auto" 
                          HorizontalScrollBarVisibility="Disabled">

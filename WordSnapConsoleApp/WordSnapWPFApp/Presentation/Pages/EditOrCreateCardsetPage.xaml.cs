@@ -167,5 +167,34 @@ namespace WordSnapWPFApp.Presentation.Pages
             WordUaTextBox.Text = string.Empty;
             CommentTextBox.Text = string.Empty;
         }
+        private async void DeleteCardButton_Click(object sender, RoutedEventArgs e)
+        {
+            var user = UserService.Instance.GetLoggedInUser();
+            if (user != null)
+            {
+                try
+                {
+                    var result = MessageBox.Show("Ви впевнені, що хочете видалити цю картку?",
+                        "Підтвердження",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        int cardId = ((Button)sender).Tag as int? ?? throw new InvalidOperationException("ID картки не знайдено.");
+                        await _cardsetService.DeleteCardAsync(user.Id, cardId);
+                        NavigationService.Refresh();
+                    }
+                }
+                catch (InvalidOperationException ex)
+                {
+                    MessageBox.Show(ex.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                NavigationService.Navigate(new LoginPage());
+            }
+        }
     }
 }
