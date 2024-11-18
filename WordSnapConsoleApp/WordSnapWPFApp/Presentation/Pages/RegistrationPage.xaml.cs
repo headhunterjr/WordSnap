@@ -1,48 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using WordSnapWPFApp.BLL.Services;
-using WordSnapWPFApp.DAL.Models;
+﻿// <copyright file="RegistrationPage.xaml.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace WordSnapWPFApp.Presentation.Pages
 {
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Navigation;
+    using WordSnapWPFApp.BLL.Services;
+
     /// <summary>
-    /// Interaction logic for RegistrationPage.xaml
+    /// Interaction logic for RegistrationPage.xaml.
     /// </summary>
     public partial class RegistrationPage : Page
     {
-        private readonly ValidationService _validationService = new ValidationService();
-        public string? Username {  get; set; }
-        public string? Email { get; set; }
-        public string? Password { get; set; }
+        private readonly ValidationService validationService = new ValidationService();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RegistrationPage"/> class.
+        /// </summary>
         public RegistrationPage()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        /// <summary>
+        /// Gets or sets username.
+        /// </summary>
+        public string? Username { get; set; }
+
+        /// <summary>
+        /// Gets or sets email.
+        /// </summary>
+        public string? Email { get; set; }
+
+        /// <summary>
+        /// Gets or sets password.
+        /// </summary>
+        public string? Password { get; set; }
 
         private async void Register_Click(object sender, RoutedEventArgs e)
         {
-            if (!_validationService.ValidateRegistrationForm(Username, Email, Password))
+            if (!this.validationService.ValidateRegistrationForm(this.Username, this.Email, this.Password))
             {
                 return;
             }
+
             try
             {
-                await UserService.Instance.RegisterUserAsync(Username, Email, Password);
-                NavigationService.Navigate(new LoginPage());
+                await UserService.Instance.RegisterUserAsync(this.Username, this.Email, this.Password);
+                this.NavigationService.Navigate(new LoginPage());
             }
-            catch (InvalidOperationException ex) 
+            catch (InvalidOperationException ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -51,11 +60,12 @@ namespace WordSnapWPFApp.Presentation.Pages
                 MessageBox.Show("Помилка при реєстрації: " + ex.Message);
             }
         }
+
         private void OnPasswordChanged(object sender, RoutedEventArgs e)
         {
             if (sender is PasswordBox passwordBox)
             {
-                Password = passwordBox.Password;
+                this.Password = passwordBox.Password;
             }
         }
     }

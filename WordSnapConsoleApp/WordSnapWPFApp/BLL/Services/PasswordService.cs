@@ -1,21 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="PasswordService.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace WordSnapWPFApp.BLL.Services
 {
+    using System.Security.Cryptography;
+    using System.Text;
+
+    /// <summary>
+    /// password service.
+    /// </summary>
     internal class PasswordService
     {
-        private const int saltSize = 16;
+        private const int SaltSize = 16;
+
+        /// <summary>
+        /// generates salt.
+        /// </summary>
+        /// <returns>salt.</returns>
         public static string GenerateSalt()
         {
-            var saltBytes = new byte[saltSize];
+            var saltBytes = new byte[SaltSize];
             RandomNumberGenerator.Fill(saltBytes);
             return Convert.ToBase64String(saltBytes);
         }
+
+        /// <summary>
+        /// hashes a password.
+        /// </summary>
+        /// <param name="password">password.</param>
+        /// <param name="salt">salt.</param>
+        /// <returns>hashed password.</returns>
         public static string HashPassword(string password, string salt)
         {
             using (var sha256 = SHA256.Create())

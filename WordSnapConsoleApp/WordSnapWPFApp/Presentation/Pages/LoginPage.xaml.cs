@@ -1,57 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using WordSnapWPFApp.BLL.Services;
-using WordSnapWPFApp.DAL.Models;
+﻿// <copyright file="LoginPage.xaml.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace WordSnapWPFApp.Presentation.Pages
 {
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Navigation;
+    using WordSnapWPFApp.BLL.Services;
+
     /// <summary>
-    /// Interaction logic for LoginPage.xaml
+    /// Interaction logic for LoginPage.xaml.
     /// </summary>
     public partial class LoginPage : Page
     {
-        public string? Email {  get; set; }
-        public string? Password { get; set; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LoginPage"/> class.
+        /// </summary>
         public LoginPage()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        /// <summary>
+        /// Gets or sets email.
+        /// </summary>
+        public string? Email { get; set; }
+
+        /// <summary>
+        /// Gets or sets password.
+        /// </summary>
+        public string? Password { get; set; }
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new RegistrationPage());
+            this.NavigationService.Navigate(new RegistrationPage());
         }
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
+            if (string.IsNullOrEmpty(this.Email) || string.IsNullOrEmpty(this.Password))
             {
                 MessageBox.Show("Введіть пошту та пароль.");
                 return;
             }
+
             try
             {
-                var user = await UserService.Instance.LoginUserAsync(Email, Password);
+                var user = await UserService.Instance.LoginUserAsync(this.Email, this.Password);
                 if (user != null)
                 {
                     if (Application.Current.MainWindow is MainWindow mainWindow)
                     {
                         mainWindow.UpdateUIForLoginState();
                     }
-                    NavigationService.Navigate(new MainPage());
+
+                    this.NavigationService.Navigate(new MainPage());
                 }
                 else
                 {
@@ -63,11 +67,12 @@ namespace WordSnapWPFApp.Presentation.Pages
                 MessageBox.Show("Помилка під час входу: " + ex.Message);
             }
         }
+
         private void OnPasswordChanged(object sender, RoutedEventArgs e)
         {
             if (sender is PasswordBox passwordBox)
             {
-                Password = passwordBox.Password;
+                this.Password = passwordBox.Password;
             }
         }
     }
