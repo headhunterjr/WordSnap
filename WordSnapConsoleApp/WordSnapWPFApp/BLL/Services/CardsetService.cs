@@ -158,6 +158,10 @@ namespace WordSnapWPFApp.BLL.Services
         public async Task<Userscardset?> GetUserscardsetAsync(int userId, int cardsetId)
         {
             var userscardset = await _repository.GetUserscardsetAsync(userId, cardsetId);
+            if (userscardset == null)
+            {
+                throw new InvalidOperationException("Ви не маєте доступу до цієї колекції");
+            }
             return userscardset;
         }
         public async Task DeleteCardsetAsync(int userId, int cardsetId)
