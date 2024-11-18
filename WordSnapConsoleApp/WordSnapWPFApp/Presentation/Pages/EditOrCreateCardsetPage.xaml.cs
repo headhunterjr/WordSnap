@@ -1,89 +1,105 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using WordSnapWPFApp.BLL.Services;
-using WordSnapWPFApp.DAL.Models;
+﻿// <copyright file="EditOrCreateCardsetPage.xaml.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace WordSnapWPFApp.Presentation.Pages
 {
+    using System.Collections.ObjectModel;
+    using System.Windows;
+    using System.Windows.Controls;
+    using WordSnapWPFApp.BLL.Services;
+    using WordSnapWPFApp.DAL.Models;
+
+    /// <summary>
+    /// edit or create a cardset page.
+    /// </summary>
     public partial class EditOrCreateCardsetPage : Page
     {
-        private readonly CardsetService _cardsetService = new CardsetService();
-        private readonly ValidationService _validationService = new ValidationService();
-        private int? _cardsetId;
-        private Cardset _currentCardset;
-        private Card? _selectedCard;
-        private ObservableCollection<Card> _observedCards;
-        private bool _isInitializing = true;
+        private readonly CardsetService cardsetService = new CardsetService();
+        private readonly ValidationService validationService = new ValidationService();
+        private int? cardsetId;
+        private Cardset currentCardset;
+        private Card? selectedCard;
+        private ObservableCollection<Card> observedCards;
+        private bool isInitializing = true;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditOrCreateCardsetPage"/> class.
+        /// </summary>
+        /// <param name="cardsetId">cardset's Id.</param>
         public EditOrCreateCardsetPage(int? cardsetId = null)
         {
-            InitializeComponent();
-            _cardsetId = cardsetId;
-            _observedCards = new ObservableCollection<Card>();
-            CardsListBox.ItemsSource = _observedCards;
-            InitializePage();
+            this.InitializeComponent();
+            this.cardsetId = cardsetId;
+            this.observedCards = new ObservableCollection<Card>();
+            this.CardsListBox.ItemsSource = this.observedCards;
+            this.InitializePage();
         }
 
         private async void InitializePage()
         {
-            if (_cardsetId.HasValue)
+            if (this.cardsetId.HasValue)
             {
-                _currentCardset = await _cardsetService.GetCardsetAsync(_cardsetId.Value);
-                if (_currentCardset != null)
+                this.currentCardset = await this.cardsetService.GetCardsetAsync(this.cardsetId.Value);
+                if (this.currentCardset != null)
                 {
-                    CardsetName.Text = _currentCardset.Name;
-                    var cards = await _cardsetService.GetCardsOfCardsetAsync(_cardsetId.Value);
-                    _observedCards.Clear();
+                    this.CardsetName.Text = this.currentCardset.Name;
+                    var cards = await this.cardsetService.GetCardsOfCardsetAsync(this.cardsetId.Value);
+                    this.observedCards.Clear();
                     foreach (var card in cards)
                     {
-                        _observedCards.Add(card);
+                        this.observedCards.Add(card);
                     }
-                    CardsetToggle.IsChecked = !_currentCardset.IsPublic;
+
+                    this.CardsetToggle.IsChecked = !this.currentCardset.IsPublic;
                 }
             }
             else
             {
-                _currentCardset = new Cardset
+                this.currentCardset = new Cardset
                 {
                     Name = "Нова колекція",
                     IsPublic = false,
                     UserRef = UserService.Instance.GetLoggedInUser().Id,
-                    Cards = new List<Card>()
+                    Cards = new List<Card>(),
                 };
-                await _cardsetService.CreateCardsetAsync(_currentCardset);
-                _cardsetId = _currentCardset.Id; 
+                await this.cardsetService.CreateCardsetAsync(this.currentCardset);
+                this.cardsetId = this.currentCardset.Id;
 
-                CardsetName.Text = _currentCardset.Name;
-                CardsetToggle.IsChecked = true;
+                this.CardsetName.Text = this.currentCardset.Name;
+                this.CardsetToggle.IsChecked = true;
             }
 
-            CardsetName.LostFocus += CardsetName_LostFocus;
-            _isInitializing = false;
+            this.CardsetName.LostFocus += this.CardsetName_LostFocus;
+            this.isInitializing = false;
         }
 
         private async void CardsetName_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (_isInitializing || _currentCardset == null ||
-                _currentCardset.Name == CardsetName.Text) return;
-            var validationResult = _validationService.ValidateEnglishText(CardsetName.Text, true);
+            if (this.isInitializing || this.currentCardset == null ||
+                this.currentCardset.Name == this.CardsetName.Text)
+            {
+                return;
+            }
+
+            var validationResult = this.validationService.ValidateEnglishText(this.CardsetName.Text, true);
             if (!validationResult.IsValid)
             {
                 MessageBox.Show(validationResult.ErrorMessage, "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                CardsetName.Text = _currentCardset.Name;
+                this.CardsetName.Text = this.currentCardset.Name;
                 return;
             }
-            _currentCardset.Name = CardsetName.Text;
-            await _cardsetService.UpdateCardsetAsync(_currentCardset);
+
+            this.currentCardset.Name = this.CardsetName.Text;
+            await this.cardsetService.UpdateCardsetAsync(this.currentCardset);
         }
 
         private async void CardsetToggle_Checked(object sender, RoutedEventArgs e)
         {
-            if (_currentCardset != null && !_isInitializing)
+            if (this.currentCardset != null && !this.isInitializing)
             {
-                _currentCardset.IsPublic = !CardsetToggle.IsChecked;
-                await _cardsetService.UpdateCardsetAsync(_currentCardset);
+                this.currentCardset.IsPublic = !this.CardsetToggle.IsChecked;
+                await this.cardsetService.UpdateCardsetAsync(this.currentCardset);
             }
         }
 
@@ -91,101 +107,105 @@ namespace WordSnapWPFApp.Presentation.Pages
         {
             if (sender is Button button && button.DataContext is Card card)
             {
-                _selectedCard = card;
-                UpdateEditForm();
+                this.selectedCard = card;
+                this.UpdateEditForm();
             }
         }
 
         private void UpdateEditForm()
         {
-            if (_selectedCard != null)
+            if (this.selectedCard != null)
             {
-                WordEnTextBox.Text = _selectedCard.WordEn;
-                WordUaTextBox.Text = _selectedCard.WordUa;
-                CommentTextBox.Text = _selectedCard.Comment;
+                this.WordEnTextBox.Text = this.selectedCard.WordEn;
+                this.WordUaTextBox.Text = this.selectedCard.WordUa;
+                this.CommentTextBox.Text = this.selectedCard.Comment;
             }
         }
 
         private void AddNewCard_Click(object sender, RoutedEventArgs e)
         {
-            _selectedCard = null;
-            WordEnTextBox.Text = string.Empty;
-            WordUaTextBox.Text = string.Empty;
-            CommentTextBox.Text = string.Empty;
+            this.selectedCard = null;
+            this.WordEnTextBox.Text = string.Empty;
+            this.WordUaTextBox.Text = string.Empty;
+            this.CommentTextBox.Text = string.Empty;
         }
 
         private async void AddOrUpdateCardButton_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(WordEnTextBox.Text) || string.IsNullOrWhiteSpace(WordUaTextBox.Text))
+            if (string.IsNullOrWhiteSpace(this.WordEnTextBox.Text) || string.IsNullOrWhiteSpace(this.WordUaTextBox.Text))
             {
                 MessageBox.Show("Спершу введіть слово та його переклад.");
                 return;
             }
-            var englishValidation = _validationService.ValidateEnglishText(WordEnTextBox.Text);
-            var ukrainianValidation = _validationService.ValidateUkrainianText(WordUaTextBox.Text);
+
+            var englishValidation = this.validationService.ValidateEnglishText(this.WordEnTextBox.Text);
+            var ukrainianValidation = this.validationService.ValidateUkrainianText(this.WordUaTextBox.Text);
             if (!englishValidation.IsValid)
             {
                 MessageBox.Show(englishValidation.ErrorMessage, "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+
             if (!ukrainianValidation.IsValid)
             {
                 MessageBox.Show(ukrainianValidation.ErrorMessage, "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            if (_selectedCard == null)
+            if (this.selectedCard == null)
             {
                 var newCard = new Card
                 {
-                    WordEn = WordEnTextBox.Text,
-                    WordUa = WordUaTextBox.Text,
-                    Comment = CommentTextBox.Text
+                    WordEn = this.WordEnTextBox.Text,
+                    WordUa = this.WordUaTextBox.Text,
+                    Comment = this.CommentTextBox.Text,
                 };
 
-                await _cardsetService.AddCardToCardsetAsync(newCard, _cardsetId.Value);
+                await this.cardsetService.AddCardToCardsetAsync(newCard, this.cardsetId.Value);
 
-                _observedCards.Add(newCard);
+                this.observedCards.Add(newCard);
             }
             else
             {
-                _selectedCard.WordEn = WordEnTextBox.Text;
-                _selectedCard.WordUa = WordUaTextBox.Text;
-                _selectedCard.Comment = CommentTextBox.Text;
+                this.selectedCard.WordEn = this.WordEnTextBox.Text;
+                this.selectedCard.WordUa = this.WordUaTextBox.Text;
+                this.selectedCard.Comment = this.CommentTextBox.Text;
 
-                await _cardsetService.UpdateCardAsync(_selectedCard);
+                await this.cardsetService.UpdateCardAsync(this.selectedCard);
 
-                var cardIndex = _observedCards.IndexOf(_selectedCard);
+                var cardIndex = this.observedCards.IndexOf(this.selectedCard);
                 if (cardIndex != -1)
                 {
-                    _observedCards[cardIndex] = _selectedCard;
+                    this.observedCards[cardIndex] = this.selectedCard;
                 }
             }
 
-            _selectedCard = null;
-            WordEnTextBox.Text = string.Empty;
-            WordUaTextBox.Text = string.Empty;
-            CommentTextBox.Text = string.Empty;
+            this.selectedCard = null;
+            this.WordEnTextBox.Text = string.Empty;
+            this.WordUaTextBox.Text = string.Empty;
+            this.CommentTextBox.Text = string.Empty;
         }
+
         private async void DeleteCardButton_Click(object sender, RoutedEventArgs e)
         {
             var user = UserService.Instance.GetLoggedInUser();
             if (user == null)
             {
-                NavigationService.Navigate(new LoginPage());
+                this.NavigationService.Navigate(new LoginPage());
                 return;
             }
 
-            if (_selectedCard == null)
+            if (this.selectedCard == null)
             {
-                MessageBox.Show("Спочатку виберіть картку для видалення.",
+                MessageBox.Show(
+                    "Спочатку виберіть картку для видалення.",
                     "Попередження",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
                 return;
             }
 
-            await TryDeleteCardAsync(_selectedCard, user.Id);
+            await this.TryDeleteCardAsync(this.selectedCard, user.Id);
         }
 
         private async void DeleteCardMenuItem_Click(object sender, RoutedEventArgs e)
@@ -193,7 +213,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             var user = UserService.Instance.GetLoggedInUser();
             if (user == null)
             {
-                NavigationService.Navigate(new LoginPage());
+                this.NavigationService.Navigate(new LoginPage());
                 return;
             }
 
@@ -204,19 +224,21 @@ namespace WordSnapWPFApp.Presentation.Pages
 
             if (cardToDelete == null)
             {
-                MessageBox.Show("Не вдалося знайти картку для видалення.",
+                MessageBox.Show(
+                    "Не вдалося знайти картку для видалення.",
                     "Помилка",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 return;
             }
 
-            await TryDeleteCardAsync(cardToDelete, user.Id);
+            await this.TryDeleteCardAsync(cardToDelete, user.Id);
         }
 
         private async Task TryDeleteCardAsync(Card cardToDelete, int userId)
         {
-            var result = MessageBox.Show("Ви впевнені, що хочете видалити цю картку?",
+            var result = MessageBox.Show(
+                "Ви впевнені, що хочете видалити цю картку?",
                 "Підтвердження",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
@@ -225,15 +247,15 @@ namespace WordSnapWPFApp.Presentation.Pages
             {
                 try
                 {
-                    await _cardsetService.DeleteCardAsync(userId, cardToDelete.Id);
-                    _observedCards.Remove(cardToDelete);
+                    await this.cardsetService.DeleteCardAsync(userId, cardToDelete.Id);
+                    this.observedCards.Remove(cardToDelete);
 
-                    if (_selectedCard?.Id == cardToDelete.Id)
+                    if (this.selectedCard?.Id == cardToDelete.Id)
                     {
-                        _selectedCard = null;
-                        WordEnTextBox.Text = string.Empty;
-                        WordUaTextBox.Text = string.Empty;
-                        CommentTextBox.Text = string.Empty;
+                        this.selectedCard = null;
+                        this.WordEnTextBox.Text = string.Empty;
+                        this.WordUaTextBox.Text = string.Empty;
+                        this.CommentTextBox.Text = string.Empty;
                     }
                 }
                 catch (Exception ex)
@@ -242,6 +264,5 @@ namespace WordSnapWPFApp.Presentation.Pages
                 }
             }
         }
-
     }
 }

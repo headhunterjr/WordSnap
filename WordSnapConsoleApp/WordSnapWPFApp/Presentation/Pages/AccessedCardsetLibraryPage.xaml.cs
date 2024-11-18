@@ -1,45 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using WordSnapWPFApp.BLL.Services;
-using WordSnapWPFApp.DAL.Models;
+﻿// <copyright file="AccessedCardsetLibraryPage.xaml.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace WordSnapWPFApp.Presentation.Pages
 {
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Navigation;
+    using WordSnapWPFApp.BLL.Services;
+    using WordSnapWPFApp.DAL.Models;
+
     /// <summary>
-    /// Interaction logic for AccessedCardsetLibraryPage.xaml
+    /// Interaction logic for AccessedCardsetLibraryPage.xaml.
     /// </summary>
     public partial class AccessedCardsetLibraryPage : Page
     {
-        private readonly CardsetService _cardsetService = new CardsetService();
+        private readonly CardsetService cardsetService = new CardsetService();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AccessedCardsetLibraryPage"/> class.
+        /// </summary>
         public AccessedCardsetLibraryPage()
         {
-            InitializeComponent();
-            InitializeCardsets();
+            this.InitializeComponent();
+            this.InitializeCardsets();
         }
+
         private async void InitializeCardsets()
         {
             int userId = UserService.Instance.GetLoggedInUser().Id;
-            var cardsets = await _cardsetService.GetUsersCardsetsLibraryAsync(userId);
-            CardsetsListBox.ItemsSource = cardsets;
+            var cardsets = await this.cardsetService.GetUsersCardsetsLibraryAsync(userId);
+            this.CardsetsListBox.ItemsSource = cardsets;
         }
 
         private void CardsetButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && button.DataContext is Cardset cardset)
             {
-                NavigationService.Navigate(new CardsetPage(cardset.Id, cardset.Name));
+                this.NavigationService.Navigate(new CardsetPage(cardset.Id, cardset.Name));
             }
         }
     }
