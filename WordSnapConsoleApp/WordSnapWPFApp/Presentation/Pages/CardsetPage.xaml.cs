@@ -7,7 +7,6 @@ namespace WordSnapWPFApp.Presentation.Pages
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
-    using System.Windows.Navigation;
     using WordSnapWPFApp.BLL.Services;
     using WordSnapWPFApp.DAL.Models;
 
@@ -20,6 +19,7 @@ namespace WordSnapWPFApp.Presentation.Pages
         private int cardsetId;
         private string cardsetName;
         private Card selectedCard;
+        private bool isCardsetInSavedCollection;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CardsetPage"/> class.
@@ -61,7 +61,14 @@ namespace WordSnapWPFApp.Presentation.Pages
             var cards = await this.cardsetService.GetCardsOfCardsetAsync(this.cardsetId);
             this.CardsListBox.ItemsSource = cards;
             this.CardsetName.Text = this.cardsetName;
+
+            if (UserService.Instance.IsUserLoggedIn)
+            {
+                int userId = UserService.Instance.GetLoggedInUser().Id;
+                this.isCardsetInSavedCollection = await this.cardsetService.IsCardsetInUserSavedLibraryAsync(userId, this.cardsetId);
+                this.AddCardsetToCollectionButton.Content = this.isCardsetInSavedCollection ? "Видалити з колекції" : "Додати до колекції";
             }
+        }
 
         private void CardButton_Click(object sender, RoutedEventArgs e)
         {
@@ -69,6 +76,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             {
                 this.selectedCard = card;
                 this.CardInfo.Text = card.WordEn;
+                this.CardComment.Text = string.Empty;
             }
         }
 
@@ -79,10 +87,12 @@ namespace WordSnapWPFApp.Presentation.Pages
                 if (this.CardInfo.Text == this.selectedCard.WordEn)
                 {
                     this.CardInfo.Text = this.selectedCard.WordUa;
+                    this.CardComment.Text = this.selectedCard.Comment;
                 }
                 else
                 {
                     this.CardInfo.Text = this.selectedCard.WordEn;
+                    this.CardComment.Text = string.Empty;
                 }
             }
         }
@@ -141,11 +151,21 @@ namespace WordSnapWPFApp.Presentation.Pages
         {
             if (UserService.Instance.IsUserLoggedIn)
             {
+                int userId = UserService.Instance.GetLoggedInUser().Id;
                 try
                 {
-                    int userId = UserService.Instance.GetLoggedInUser().Id;
-                    int cardsetId = this.cardsetId;
-                    await this.cardsetService.AddCardsetToSavedLibraryAsync(userId, cardsetId);
+                    if (this.isCardsetInSavedCollection)
+                    {
+                        await this.cardsetService.DeleteUserscardsetAsync(userId, this.cardsetId);
+                        this.isCardsetInSavedCollection = false;
+                        this.AddCardsetToCollectionButton.Content = "Додати до колекції";
+                    }
+                    else
+                    {
+                        await this.cardsetService.AddCardsetToSavedLibraryAsync(userId, this.cardsetId);
+                        this.isCardsetInSavedCollection = true;
+                        this.AddCardsetToCollectionButton.Content = "Видалити з колекції";
+                    }
                 }
                 catch (InvalidOperationException ex)
                 {
@@ -157,6 +177,7 @@ namespace WordSnapWPFApp.Presentation.Pages
                 this.NavigationService.Navigate(new LoginPage());
             }
         }
+
 
         private async void DeleteCardsetButton_Click(object sender, RoutedEventArgs e)
         {

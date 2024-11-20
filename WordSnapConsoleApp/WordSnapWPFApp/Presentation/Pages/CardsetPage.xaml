@@ -239,6 +239,12 @@
                                    VerticalAlignment="Center" 
                                    FontSize="20" 
                                    Margin="20" />
+                        <TextBlock x:Name="CardComment"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Bottom"
+                                   FontSize="12"
+                                   FontFamily="Bahnschrift"
+                                   Margin="20"/>
                     </Grid>
                 </Border>
             </StackPanel>

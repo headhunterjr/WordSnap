@@ -328,20 +328,41 @@ namespace WordSnapWPFApp.BLL.Services
         public async Task DeleteUserscardsetAsync(int userId, int cardsetId)
         {
             var userscardset = await this.repository.GetUserscardsetAsync(userId, cardsetId);
-            var user = UserService.Instance.GetLoggedInUser();
             if (userscardset == null)
             {
                 throw new InvalidOperationException("Запис не знайдено.");
             }
 
+            var user = UserService.Instance.GetLoggedInUser();
             if (user != null && user.Id == userId)
             {
-                var success = await this.repository.DeleteUsersCardset(userscardset.Id);
+                bool success = await this.repository.DeleteUsersCardset(userscardset.Id);
                 if (!success)
                 {
-                    throw new InvalidOperationException("Не вдалося видалити запис");
+                    throw new InvalidOperationException("Не вдалося видалити запис.");
                 }
             }
+            else
+            {
+                throw new UnauthorizedAccessException("Користувач не авторизований.");
+            }
+        }
+
+        /// <summary>
+        /// checks if a cardset is in the userscardset table for the specified user.
+        /// </summary>
+        /// <param name="userId">user's Id.</param>
+        /// <param name="cardsetId">cardset's Id.</param>
+        /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
+        public async Task<bool> IsCardsetInUserSavedLibraryAsync(int userId, int cardsetId)
+        {
+            var userscardset = await this.repository.GetUserscardsetAsync(userId, cardsetId);
+            if (userscardset == null)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
