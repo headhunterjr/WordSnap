@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordSnapWPFApp", "WordSnapW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordSnapConsoleAppTests", "WordSnapConsoleAppTests\WordSnapConsoleAppTests.csproj", "{3D9144D0-6ABB-4E8B-A964-CDB17B49C873}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordSnapWPFAppTests", "WordSnapWPFAppTests\WordSnapWPFAppTests.csproj", "{C2C240CC-CDCD-4807-B439-C19F8984FF8F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3D9144D0-6ABB-4E8B-A964-CDB17B49C873}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D9144D0-6ABB-4E8B-A964-CDB17B49C873}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D9144D0-6ABB-4E8B-A964-CDB17B49C873}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2C240CC-CDCD-4807-B439-C19F8984FF8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2C240CC-CDCD-4807-B439-C19F8984FF8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2C240CC-CDCD-4807-B439-C19F8984FF8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2C240CC-CDCD-4807-B439-C19F8984FF8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
