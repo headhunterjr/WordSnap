@@ -10,7 +10,7 @@ namespace WordSnapWPFApp.BLL.Services
     /// <summary>
     /// password service.
     /// </summary>
-    internal class PasswordService
+    public class PasswordService
     {
         private const int SaltSize = 16;
 
