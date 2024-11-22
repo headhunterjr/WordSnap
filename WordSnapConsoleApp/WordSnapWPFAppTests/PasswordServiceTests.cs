@@ -1,9 +1,19 @@
-using WordSnapWPFApp.BLL.Services;
+// <copyright file="PasswordServiceTests.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace WordSnapWPFAppTests
 {
+    using WordSnapWPFApp.BLL.Services;
+
+    /// <summary>
+    /// Password service tests.
+    /// </summary>
     public class PasswordServiceTests
     {
+        /// <summary>
+        /// Generated salts should be unique.
+        /// </summary>
         [Fact]
         public void GenerateSalt_ShouldReturnUniqueValues()
         {
@@ -17,6 +27,9 @@ namespace WordSnapWPFAppTests
             Assert.NotEqual(salt1, salt2);
         }
 
+        /// <summary>
+        /// Hashed passwords should be the same for the same input.
+        /// </summary>
         [Fact]
         public void HashPassword_ShouldReturnConsistentHashForSameInputs()
         {
@@ -32,6 +45,9 @@ namespace WordSnapWPFAppTests
             Assert.Equal(hash1, hash2);
         }
 
+        /// <summary>
+        /// Hashed passwords should be different for different salts.
+        /// </summary>
         [Fact]
         public void HashPassword_ShouldReturnDifferentHashesForDifferentSalts()
         {
@@ -48,6 +64,9 @@ namespace WordSnapWPFAppTests
             Assert.NotEqual(hash1, hash2);
         }
 
+        /// <summary>
+        /// Hashed passwords should be different for different passwords.
+        /// </summary>
         [Fact]
         public void HashPassword_ShouldReturnDifferentHashesForDifferentPasswords()
         {

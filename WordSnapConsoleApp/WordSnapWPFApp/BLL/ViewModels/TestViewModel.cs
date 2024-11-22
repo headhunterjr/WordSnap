@@ -9,7 +9,7 @@ namespace WordSnapWPFApp.BLL.ViewModels
     /// <summary>
     /// test view model.
     /// </summary>
-    internal class TestViewModel
+    public class TestViewModel
     {
         /// <summary>
         /// Gets or sets cards.

@@ -1,30 +1,46 @@
-﻿using Npgsql;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="NpgsqlDataReaderWrapper.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace WordSnapConsoleAppTests
 {
+    using Npgsql;
+
+    /// <summary>
+    /// Npgsql data reader wrapper.
+    /// </summary>
     public class NpgsqlDataReaderWrapper : IDataReaderWrapper
     {
-        private readonly NpgsqlDataReader _reader;
+        private readonly NpgsqlDataReader reader;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NpgsqlDataReaderWrapper"/> class.
+        /// </summary>
+        /// <param name="reader">reader.</param>
         public NpgsqlDataReaderWrapper(NpgsqlDataReader reader)
         {
-            _reader = reader;
+            this.reader = reader;
         }
 
-        public bool Read() => _reader.Read();
-        public int FieldCount => _reader.FieldCount;
-        public string GetName(int i) => _reader.GetName(i);
-        public object GetValue(int i) => _reader.GetValue(i);
-        public bool HasRows => _reader.HasRows;
+        /// <inheritdoc/>
+        public int FieldCount => this.reader.FieldCount;
 
+        /// <inheritdoc/>
+        public bool HasRows => this.reader.HasRows;
+
+        /// <inheritdoc/>
+        public string GetName(int i) => this.reader.GetName(i);
+
+        /// <inheritdoc/>
+        public object GetValue(int i) => this.reader.GetValue(i);
+
+        /// <inheritdoc/>
+        public bool Read() => this.reader.Read();
+
+        /// <inheritdoc/>
         public void Dispose()
         {
-            _reader.Dispose();
+            this.reader.Dispose();
         }
     }
 }
