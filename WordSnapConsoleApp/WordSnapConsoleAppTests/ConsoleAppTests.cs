@@ -1,14 +1,21 @@
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using System.Reflection;
-using Moq;
-using Npgsql;
-using Microsoft.Extensions.Configuration;
-using System.Data;
+// <copyright file="ConsoleAppTests.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace WordSnapConsoleAppTests
 {
+    using Microsoft.Extensions.Configuration;
+    using Moq;
+    using Npgsql;
+
+    /// <summary>
+    /// Console app tests.
+    /// </summary>
     public class ConsoleAppTests
     {
+        /// <summary>
+        /// Valid JSON should return a connection string.
+        /// </summary>
         [Fact]
         public void LoadConfiguration_ValidJson_ReturnsConnectionString()
         {
@@ -29,6 +36,9 @@ namespace WordSnapConsoleAppTests
             Assert.Contains("localhost", connectionString);
         }
 
+        /// <summary>
+        /// Creating tables method executes without errors.
+        /// </summary>
         [Fact]
         public void CreateTables_ExecutesWithoutErrors()
         {
@@ -52,6 +62,9 @@ namespace WordSnapConsoleAppTests
             Assert.Equal(1, result);
         }
 
+        /// <summary>
+        /// Populate tables method executes insert statements.
+        /// </summary>
         [Fact]
         public void PopulateTablesWithRandomData_ExecutesInsertStatements()
         {
@@ -81,6 +94,9 @@ namespace WordSnapConsoleAppTests
             Assert.Equal(1, result);
         }
 
+        /// <summary>
+        /// Print table contents method displays table data.
+        /// </summary>
         [Fact]
         public void PrintTableContents_DisplaysTableData()
         {
@@ -135,6 +151,9 @@ namespace WordSnapConsoleAppTests
             }
         }
 
+        /// <summary>
+        /// Create tables method generates correct sql for table creation.
+        /// </summary>
         [Fact]
         public void CreateTables_GeneratesCorrectTableCreationSql()
         {
@@ -148,7 +167,8 @@ namespace WordSnapConsoleAppTests
 
             commandMock
                 .SetupSet(cmd => cmd.CommandText = It.IsAny<string>())
-                .Callback<string>((sql) => {
+                .Callback<string>((sql) =>
+                {
                     Assert.Contains("CREATE TABLE IF NOT EXISTS Users", sql);
                     Assert.Contains("CREATE TABLE IF NOT EXISTS CardSets", sql);
                     Assert.Contains("CREATE TABLE IF NOT EXISTS Cards", sql);
@@ -162,6 +182,9 @@ namespace WordSnapConsoleAppTests
             command.CommandText = "CREATE TABLE IF NOT EXISTS Users; " + "CREATE TABLE IF NOT EXISTS CardSets; " + "CREATE TABLE IF NOT EXISTS Cards; " + "CREATE TABLE IF NOT EXISTS Progress; " + "CREATE TABLE IF NOT EXISTS UsersCardSets; ";
         }
 
+        /// <summary>
+        /// Print table method retrieves all columns of a table.
+        /// </summary>
         [Fact]
         public void PrintTable_RetrievesAllColumnsForTable()
         {
@@ -208,6 +231,9 @@ namespace WordSnapConsoleAppTests
             }
         }
 
+        /// <summary>
+        /// Dispose calls parent dispose.
+        /// </summary>
         [Fact]
         public void DatabaseConnection_Dispose_CallsDisposeOnConnection()
         {
@@ -222,6 +248,9 @@ namespace WordSnapConsoleAppTests
             connectionMock.Verify(conn => conn.Dispose(), Times.Once);
         }
 
+        /// <summary>
+        /// Execute reader on an empty result set returns no rows.
+        /// </summary>
         [Fact]
         public void ExecuteReader_EmptyResultSet_ReturnsNoRows()
         {
@@ -247,6 +276,9 @@ namespace WordSnapConsoleAppTests
             }
         }
 
+        /// <summary>
+        /// Execute Non Query executes correctly.
+        /// </summary>
         [Fact]
         public void ExecuteNonQuery_ExecutesCorrectly()
         {
@@ -272,6 +304,9 @@ namespace WordSnapConsoleAppTests
             Assert.Equal(1, result);
         }
 
+        /// <summary>
+        /// Execute Non query throws exception when an error occurs.
+        /// </summary>
         [Fact]
         public void ExecuteNonQuery_ThrowsException_OnError()
         {
@@ -295,6 +330,5 @@ namespace WordSnapConsoleAppTests
             var exception = Assert.Throws<Exception>(() => command.ExecuteNonQuery());
             Assert.Equal("Database error", exception.Message);
         }
-
     }
 }

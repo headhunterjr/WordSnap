@@ -1,32 +1,43 @@
-﻿using Npgsql;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="DatabaseConnection.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace WordSnapConsoleAppTests
 {
+    using Npgsql;
+
+    /// <summary>
+    /// Database connection class.
+    /// </summary>
     public class DatabaseConnection : IDatabaseConnection
     {
-        private readonly NpgsqlConnection _connection;
+        private readonly NpgsqlConnection connection;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DatabaseConnection"/> class.
+        /// </summary>
+        /// <param name="connectionString">connection string.</param>
         public DatabaseConnection(string connectionString)
         {
-            _connection = new NpgsqlConnection(connectionString);
+            this.connection = new NpgsqlConnection(connectionString);
         }
 
-        public void Open() => _connection.Open();
+        /// <inheritdoc/>
+        public void Open() => this.connection.Open();
 
-        public NpgsqlCommand CreateCommand() => _connection.CreateCommand();
+        /// <inheritdoc/>
+        public NpgsqlCommand CreateCommand() => this.connection.CreateCommand();
 
-        public void Close() => _connection.Close();
+        /// <inheritdoc/>
+        public void Close() => this.connection.Close();
 
-        public void Dispose() => _connection.Dispose();
+        /// <inheritdoc/>
+        public void Dispose() => this.connection.Dispose();
 
+        /// <inheritdoc/>
         public IDataReaderWrapper ExecuteReader(string commandText)
         {
-            var command = CreateCommand();
+            var command = this.CreateCommand();
             command.CommandText = commandText;
             var reader = command.ExecuteReader();
             return new NpgsqlDataReaderWrapper(reader);
