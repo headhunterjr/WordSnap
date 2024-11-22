@@ -9,7 +9,7 @@ namespace WordSnapWPFApp.BLL.Services
     /// <summary>
     /// user service.
     /// </summary>
-    internal class UserService : IDisposable
+    public class UserService : IDisposable
     {
         private static UserService? instance;
 
