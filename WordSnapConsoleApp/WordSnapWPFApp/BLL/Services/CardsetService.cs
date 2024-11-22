@@ -9,7 +9,7 @@ namespace WordSnapWPFApp.BLL.Services
     /// <summary>
     /// cardset service.
     /// </summary>
-    internal class CardsetService : IDisposable
+    public class CardsetService : IDisposable
     {
         private readonly WordSnapRepository repository = new WordSnapRepository();
         private bool disposed = false;
