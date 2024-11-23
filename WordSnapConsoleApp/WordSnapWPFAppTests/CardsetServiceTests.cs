@@ -68,8 +68,8 @@ namespace WordSnapWPFAppTests
         {
             // Arrange
             var service = new CardsetService();
-            var userId = 82;
-            var cardsetId = 2420;
+            var userId = 1;
+            var cardsetId = 2;
 
             // Act & Assert
             await Assert.ThrowsAsync<InvalidOperationException>(() =>
@@ -84,8 +84,8 @@ namespace WordSnapWPFAppTests
         {
             // Arrange
             var service = new CardsetService();
-            var userId = 82;
-            var cardsetId = 2420;
+            var userId = 1;
+            var cardsetId = 2;
 
             // Act
             var result = await service.IsCardsetInUserSavedLibraryAsync(userId, cardsetId);
