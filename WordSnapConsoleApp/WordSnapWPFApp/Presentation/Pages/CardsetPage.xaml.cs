@@ -7,6 +7,8 @@ namespace WordSnapWPFApp.Presentation.Pages
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
+    using System.Windows.Media.Animation;
+    using System.Windows.Media;
     using WordSnapWPFApp.BLL.Services;
     using WordSnapWPFApp.DAL.Models;
 
@@ -82,19 +84,45 @@ namespace WordSnapWPFApp.Presentation.Pages
 
         private void CardInfo_Click(object sender, MouseButtonEventArgs e)
         {
-            if (this.selectedCard != null)
+            if (this.selectedCard == null) return;
+
+            var shrinkAnimation = new DoubleAnimation
             {
-                if (this.CardInfo.Text == this.selectedCard.WordEn)
+                From = 1,
+                To = 0,
+                Duration = TimeSpan.FromSeconds(0.3),
+                AutoReverse = false
+            };
+
+            shrinkAnimation.Completed += (s, a) =>
+            {
+                if (FrontSide.Visibility == Visibility.Visible)
                 {
-                    this.CardInfo.Text = this.selectedCard.WordUa;
-                    this.CardComment.Text = this.selectedCard.Comment;
+                    FrontSide.Visibility = Visibility.Collapsed;
+                    BackSide.Visibility = Visibility.Visible;
+
+                    CardComment.Text = this.selectedCard.WordUa;
                 }
                 else
                 {
-                    this.CardInfo.Text = this.selectedCard.WordEn;
-                    this.CardComment.Text = string.Empty;
+                    FrontSide.Visibility = Visibility.Visible;
+                    BackSide.Visibility = Visibility.Collapsed;
+
+                    CardInfo.Text = this.selectedCard.WordEn;
                 }
-            }
+
+                var expandAnimation = new DoubleAnimation
+                {
+                    From = 0,
+                    To = 1,
+                    Duration = TimeSpan.FromSeconds(0.3),
+                    AutoReverse = false
+                };
+
+                CardFlipTransform.BeginAnimation(ScaleTransform.ScaleXProperty, expandAnimation);
+            };
+
+            CardFlipTransform.BeginAnimation(ScaleTransform.ScaleXProperty, shrinkAnimation);
         }
 
         private async void TestButton_Click(object sender, RoutedEventArgs e)

@@ -22,6 +22,8 @@ namespace WordSnapConsoleApp
             PrintTableContents();
         }
 
+
+
         private static void LoadConfiguration()
         {
             var configuration = new ConfigurationBuilder()
