@@ -4,10 +4,10 @@
 
 namespace WordSnapWPFApp.Presentation.Pages
 {
-    using Serilog;
     using System.Collections.ObjectModel;
     using System.Windows;
     using System.Windows.Controls;
+    using Serilog;
     using WordSnapWPFApp.BLL.Services;
     using WordSnapWPFApp.DAL.Models;
 

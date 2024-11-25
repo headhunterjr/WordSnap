@@ -4,11 +4,10 @@
 
 namespace WordSnapWPFApp.Presentation.Pages
 {
-    using Serilog;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
-    using System.Windows.Navigation;
+    using Serilog;
     using WordSnapWPFApp.BLL.Services;
     using WordSnapWPFApp.BLL.ViewModels;
 
