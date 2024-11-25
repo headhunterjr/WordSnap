@@ -4,12 +4,12 @@
 
 namespace WordSnapWPFApp.Presentation.Pages
 {
-    using Serilog;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
-    using System.Windows.Media.Animation;
     using System.Windows.Media;
+    using System.Windows.Media.Animation;
+    using Serilog;
     using WordSnapWPFApp.BLL.Services;
     using WordSnapWPFApp.DAL.Models;
 
@@ -84,7 +84,10 @@ namespace WordSnapWPFApp.Presentation.Pages
             {
                 this.selectedCard = card;
                 this.CardInfo.Text = card.WordEn;
+                this.CardTranslation.Text = string.Empty;
                 this.CardComment.Text = string.Empty;
+                this.FrontSide.Visibility = Visibility.Visible;
+                this.BackSide.Visibility = Visibility.Collapsed;
 
                 Log.Information("Card selected.");
             }
@@ -102,24 +105,25 @@ namespace WordSnapWPFApp.Presentation.Pages
                 From = 1,
                 To = 0,
                 Duration = TimeSpan.FromSeconds(0.3),
-                AutoReverse = false
+                AutoReverse = false,
             };
 
             shrinkAnimation.Completed += (s, a) =>
             {
-                if (FrontSide.Visibility == Visibility.Visible)
+                if (this.FrontSide.Visibility == Visibility.Visible)
                 {
-                    FrontSide.Visibility = Visibility.Collapsed;
-                    BackSide.Visibility = Visibility.Visible;
+                    this.FrontSide.Visibility = Visibility.Collapsed;
+                    this.BackSide.Visibility = Visibility.Visible;
 
-                    CardComment.Text = this.selectedCard.WordUa;
+                    this.CardTranslation.Text = this.selectedCard.WordUa;
+                    this.CardComment.Text = this.selectedCard.Comment;
                 }
                 else
                 {
-                    FrontSide.Visibility = Visibility.Visible;
-                    BackSide.Visibility = Visibility.Collapsed;
+                    this.FrontSide.Visibility = Visibility.Visible;
+                    this.BackSide.Visibility = Visibility.Collapsed;
 
-                    CardInfo.Text = this.selectedCard.WordEn;
+                    this.CardInfo.Text = this.selectedCard.WordEn;
                 }
 
                 var expandAnimation = new DoubleAnimation
@@ -127,13 +131,13 @@ namespace WordSnapWPFApp.Presentation.Pages
                     From = 0,
                     To = 1,
                     Duration = TimeSpan.FromSeconds(0.3),
-                    AutoReverse = false
+                    AutoReverse = false,
                 };
 
-                CardFlipTransform.BeginAnimation(ScaleTransform.ScaleXProperty, expandAnimation);
+                this.CardFlipTransform.BeginAnimation(ScaleTransform.ScaleXProperty, expandAnimation);
             };
 
-            CardFlipTransform.BeginAnimation(ScaleTransform.ScaleXProperty, shrinkAnimation);
+            this.CardFlipTransform.BeginAnimation(ScaleTransform.ScaleXProperty, shrinkAnimation);
             Log.Information("Card rotated.");
         }
 
@@ -228,7 +232,6 @@ namespace WordSnapWPFApp.Presentation.Pages
                 Log.Debug("Redirecting to LoginPage.");
             }
         }
-
 
         private async void DeleteCardsetButton_Click(object sender, RoutedEventArgs e)
         {

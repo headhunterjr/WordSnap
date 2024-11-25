@@ -2,7 +2,6 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-
 namespace WordSnapConsoleApp
 {
     using Microsoft.Extensions.Configuration;
@@ -23,8 +22,6 @@ namespace WordSnapConsoleApp
             PopulateTablesWithRandomData();
             PrintTableContents();
         }
-
-
 
         private static void LoadConfiguration()
         {
