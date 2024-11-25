@@ -2,10 +2,12 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
+
 namespace WordSnapConsoleApp
 {
     using Microsoft.Extensions.Configuration;
     using Npgsql;
+    using Serilog;
 
     /// <summary>
     /// Program class.
@@ -30,6 +32,10 @@ namespace WordSnapConsoleApp
                 .Build();
 
             connectionString = configuration.GetConnectionString("WordSnapDatabaseConnection");
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
         }
 
         private static void CreateTables()
@@ -90,6 +96,7 @@ namespace WordSnapConsoleApp
                 }
             }
 
+            Log.Information("Tables created (if they didn't already exist).");
             Console.WriteLine("Tables created (if they didn't already exist).");
         }
 
@@ -131,6 +138,8 @@ namespace WordSnapConsoleApp
                     }
                 }
 
+                Log.Information("Table Users has been filled.");
+
                 foreach (var userId in userIds)
                 {
                     for (int j = 0; j < 2; j++)
@@ -152,6 +161,8 @@ namespace WordSnapConsoleApp
                         }
                     }
                 }
+
+                Log.Information("Table CardSets has been filled.");
 
                 foreach (var setId in cardSetIds)
                 {
@@ -178,6 +189,8 @@ namespace WordSnapConsoleApp
                     }
                 }
 
+                Log.Information("Table Cards has been filled.");
+
                 for (int i = 0; i < userIds.Count; i++)
                 {
                     int userId = userIds[i];
@@ -199,6 +212,8 @@ namespace WordSnapConsoleApp
                     }
                 }
 
+                Log.Information("Table Progress has been filled.");
+
                 for (int i = 0; i < 50; i++)
                 {
                     int userId = userIds[random.Next(userIds.Count)];
@@ -213,6 +228,8 @@ namespace WordSnapConsoleApp
                         cmd.ExecuteNonQuery();
                     }
                 }
+
+                Log.Information("Table UsersCardSets has been filled.");
             }
 
             Console.WriteLine("Random data inserted into tables.");

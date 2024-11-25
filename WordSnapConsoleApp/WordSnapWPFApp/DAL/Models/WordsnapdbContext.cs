@@ -6,6 +6,7 @@ namespace WordSnapWPFApp.DAL.Models
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
+    using Serilog;
 
     /// <summary>
     /// WordSnap's database context.
@@ -56,6 +57,7 @@ namespace WordSnapWPFApp.DAL.Models
         /// <inheritdoc/>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+
             if (!optionsBuilder.IsConfigured)
             {
                 var configuration = new ConfigurationBuilder()
@@ -65,6 +67,12 @@ namespace WordSnapWPFApp.DAL.Models
                         .Build();
                 var connectionString = configuration.GetConnectionString("WordSnapDatabaseConnection");
                 optionsBuilder.UseNpgsql(connectionString);
+
+                Log.Logger = new LoggerConfiguration()
+                    .ReadFrom.Configuration(configuration)
+                    .CreateLogger();
+
+                Log.Information("Configuration loaded.");
             }
         }
 
@@ -92,6 +100,8 @@ namespace WordSnapWPFApp.DAL.Models
                     .HasConstraintName("cards_cardset_ref_fkey");
             });
 
+            Log.Information("Card created");
+
             modelBuilder.Entity<Cardset>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("cardsets_pkey");
@@ -115,6 +125,8 @@ namespace WordSnapWPFApp.DAL.Models
                     .HasForeignKey(d => d.UserRef)
                     .HasConstraintName("cardsets_user_ref_fkey");
             });
+
+            Log.Information("Cardset created");
 
             modelBuilder.Entity<Progress>(entity =>
             {
@@ -140,6 +152,8 @@ namespace WordSnapWPFApp.DAL.Models
                     .HasForeignKey(d => d.UserRef)
                     .HasConstraintName("progress_user_ref_fkey");
             });
+
+            Log.Information("Progress created");
 
             modelBuilder.Entity<User>(entity =>
             {
@@ -170,6 +184,8 @@ namespace WordSnapWPFApp.DAL.Models
                     .HasColumnName("username");
             });
 
+            Log.Information("User created");
+
             modelBuilder.Entity<Userscardset>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("userscardsets_pkey");
@@ -188,6 +204,8 @@ namespace WordSnapWPFApp.DAL.Models
                     .HasForeignKey(d => d.UserRef)
                     .HasConstraintName("userscardsets_user_ref_fkey");
             });
+
+            Log.Information("Usercardset created");
 
             this.OnModelCreatingPartial(modelBuilder);
         }

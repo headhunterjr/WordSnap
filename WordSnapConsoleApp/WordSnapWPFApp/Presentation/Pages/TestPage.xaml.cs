@@ -4,6 +4,7 @@
 
 namespace WordSnapWPFApp.Presentation.Pages
 {
+    using Serilog;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -30,6 +31,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             this.InitializeComponent();
             this.cardsetId = cardsetId;
             this.InitializePageAsync(cardsetId);
+            Log.Information("TestPage initialized.");
         }
 
         private async void InitializePageAsync(int cardsetId)
@@ -46,6 +48,8 @@ namespace WordSnapWPFApp.Presentation.Pages
                 WordUaButtons = this.viewModel.Cards.OrderBy(_ => Guid.NewGuid())
                                                  .Select(c => new { c.WordUa, Text = c.WordUa }).ToList(),
             };
+
+            Log.Information("Page initialized.");
         }
 
         private void WordEnButton_Click(object sender, RoutedEventArgs e)
@@ -107,6 +111,7 @@ namespace WordSnapWPFApp.Presentation.Pages
                     {
                         await this.SaveResultsAsync();
 
+                        Log.Information("Test passed.");
                         MessageBox.Show($"Вітання! Ви пройшли тест з результатом {Math.Round(this.viewModel.Accuracy * 100, 2)}%!");
 
                         this.ResetTestUI();
@@ -129,6 +134,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             var userId = UserService.Instance.GetLoggedInUser().Id;
             var cardsetId = this.cardsetId;
             await this.cardsetService.SaveTestProgressAsync(userId, cardsetId, this.viewModel.Accuracy);
+            Log.Information("Progress saved.");
         }
 
         private async Task AnimateBorder(Button button, Brush color)
@@ -177,6 +183,7 @@ namespace WordSnapWPFApp.Presentation.Pages
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.GoBack();
+            Log.Debug("Redirecting to GoBack.");
         }
     }
 }
