@@ -228,25 +228,33 @@
                         VerticalAlignment="Center" 
                         HorizontalAlignment="Center">
                 <Border Height="200" 
-                        Width="340" 
-                        Margin="0,10" 
-                        CornerRadius="30" 
-                        Background="#CCCCCC" 
-                        MouseDown="CardInfo_Click">
+        Width="340" 
+        Margin="0,10" 
+        CornerRadius="30" 
+        Background="#CCCCCC" 
+        MouseDown="CardInfo_Click">
+                    <Border.RenderTransform>
+                        <ScaleTransform x:Name="CardFlipTransform" ScaleX="1" ScaleY="1" CenterX="170" CenterY="100"/>
+                    </Border.RenderTransform>
                     <Grid>
-                        <TextBlock x:Name="CardInfo" 
-                                   HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center" 
-                                   FontSize="20" 
-                                   Margin="20" />
-                        <TextBlock x:Name="CardComment"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Bottom"
-                                   FontSize="12"
-                                   FontFamily="Bahnschrift"
-                                   Margin="20"/>
+                        <Grid x:Name="FrontSide" Visibility="Visible">
+                            <TextBlock x:Name="CardInfo"
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       FontSize="20" 
+                       FontWeight="Bold" />
+                        </Grid>
+
+                        <Grid x:Name="BackSide" Visibility="Collapsed">
+                            <TextBlock x:Name="CardComment"
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       FontSize="20" 
+                       FontWeight="Bold" />
+                        </Grid>
                     </Grid>
                 </Border>
+
             </StackPanel>
 
             <Grid Grid.Row="2" 
