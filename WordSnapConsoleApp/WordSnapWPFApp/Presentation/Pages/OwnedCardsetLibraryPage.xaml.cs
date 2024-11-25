@@ -4,6 +4,7 @@
 
 namespace WordSnapWPFApp.Presentation.Pages
 {
+    using Serilog;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Navigation;
@@ -24,6 +25,7 @@ namespace WordSnapWPFApp.Presentation.Pages
         {
             this.InitializeComponent();
             this.InitializeCardsets();
+            Log.Information("OwnedCardsetLibraryPage initialized.");
         }
 
         private async void InitializeCardsets()
@@ -31,6 +33,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             int userId = UserService.Instance.GetLoggedInUser().Id;
             var cardsets = await this.cardsetService.GetUsersOwnCardsetsLibraryAsync(userId);
             this.CardsetsListBox.ItemsSource = cardsets;
+            Log.Information("Cardsets initialized.");
         }
 
         private void CardsetButton_Click(object sender, RoutedEventArgs e)
@@ -38,12 +41,14 @@ namespace WordSnapWPFApp.Presentation.Pages
             if (sender is Button button && button.DataContext is Cardset cardset)
             {
                 this.NavigationService.Navigate(new CardsetPage(cardset.Id, cardset.Name));
+                Log.Debug("Redirecting to CardsetPage.");
             }
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new EditOrCreateCardsetPage());
+            Log.Debug("Redirecting to EditOrCreateCardsetPage.");
         }
     }
 }

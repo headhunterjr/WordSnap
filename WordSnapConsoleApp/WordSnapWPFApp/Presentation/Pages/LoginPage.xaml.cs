@@ -4,6 +4,7 @@
 
 namespace WordSnapWPFApp.Presentation.Pages
 {
+    using Serilog;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Navigation;
@@ -20,6 +21,7 @@ namespace WordSnapWPFApp.Presentation.Pages
         public LoginPage()
         {
             this.InitializeComponent();
+            Log.Information("LoginPage initialized.");
         }
 
         /// <summary>
@@ -35,6 +37,7 @@ namespace WordSnapWPFApp.Presentation.Pages
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new RegistrationPage());
+            Log.Information("Redirecting to RegistrationPage.");
         }
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -56,6 +59,7 @@ namespace WordSnapWPFApp.Presentation.Pages
                     }
 
                     this.NavigationService.Navigate(new MainPage());
+                    Log.Information("Redirecting to MainPage.");
                 }
                 else
                 {
@@ -64,6 +68,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             }
             catch (Exception ex)
             {
+                Log.Error("Error occurred in LoginButton_Click method.", ex);
                 MessageBox.Show("Помилка під час входу: " + ex.Message);
             }
         }
@@ -73,6 +78,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             if (sender is PasswordBox passwordBox)
             {
                 this.Password = passwordBox.Password;
+                Log.Information("Password changed.");
             }
         }
     }

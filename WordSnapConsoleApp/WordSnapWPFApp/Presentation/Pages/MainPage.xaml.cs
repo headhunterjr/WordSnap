@@ -4,6 +4,7 @@
 
 namespace WordSnapWPFApp.Presentation.Pages
 {
+    using Serilog;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Navigation;
@@ -25,6 +26,7 @@ namespace WordSnapWPFApp.Presentation.Pages
         {
             this.InitializeComponent();
             this.InitializeRabdomCardsets();
+            Log.Information("MainPage loaded.");
         }
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -56,7 +58,11 @@ namespace WordSnapWPFApp.Presentation.Pages
                         this.cardsetTextBoxes[i].Text = string.Empty;
                     }
                 }
+
+                Log.Information("Return searching result");
             }
+
+            Log.Information("Search query is empty.");
         }
 
         private async void InitializeRabdomCardsets()
@@ -79,6 +85,8 @@ namespace WordSnapWPFApp.Presentation.Pages
                     i++;
                 }
             }
+
+            Log.Information("Random cardsets initialized.");
         }
 
         private void CardButton_Click(object sender, RoutedEventArgs e)

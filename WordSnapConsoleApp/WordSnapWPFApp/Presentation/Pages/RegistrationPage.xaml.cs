@@ -4,6 +4,7 @@
 
 namespace WordSnapWPFApp.Presentation.Pages
 {
+    using Serilog;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Navigation;
@@ -22,6 +23,7 @@ namespace WordSnapWPFApp.Presentation.Pages
         public RegistrationPage()
         {
             this.InitializeComponent();
+            Log.Information("RegistrationPage initialized.");
         }
 
         /// <summary>
@@ -43,6 +45,7 @@ namespace WordSnapWPFApp.Presentation.Pages
         {
             if (!this.validationService.ValidateRegistrationForm(this.Username, this.Email, this.Password))
             {
+                Log.Error("Validation is not passed.");
                 return;
             }
 
@@ -50,13 +53,16 @@ namespace WordSnapWPFApp.Presentation.Pages
             {
                 await UserService.Instance.RegisterUserAsync(this.Username, this.Email, this.Password);
                 this.NavigationService.Navigate(new LoginPage());
+                Log.Debug("Redirecting to LoginPage.");
             }
             catch (InvalidOperationException ex)
             {
+                Log.Error(ex.Message);
                 MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 MessageBox.Show("Помилка при реєстрації: " + ex.Message);
             }
         }
@@ -66,6 +72,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             if (sender is PasswordBox passwordBox)
             {
                 this.Password = passwordBox.Password;
+                Log.Information("Password changed.");
             }
         }
     }

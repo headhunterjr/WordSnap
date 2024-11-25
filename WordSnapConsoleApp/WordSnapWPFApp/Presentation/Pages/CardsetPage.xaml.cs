@@ -4,6 +4,7 @@
 
 namespace WordSnapWPFApp.Presentation.Pages
 {
+    using Serilog;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -35,6 +36,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             this.cardsetName = cardsetName;
             this.InitializeCards();
             this.UpdateUIForLoginState();
+            Log.Information("CardsetPage initialized");
         }
 
         /// <summary>
@@ -48,6 +50,7 @@ namespace WordSnapWPFApp.Presentation.Pages
                 this.ActionButton.Visibility = Visibility.Visible;
                 this.EditCardsetButton.Visibility = Visibility.Visible;
                 this.AddCardsetToCollectionButton.Visibility = Visibility.Visible;
+                Log.Information("UI updated: user is logged.");
             }
             else
             {
@@ -55,6 +58,7 @@ namespace WordSnapWPFApp.Presentation.Pages
                 this.ActionButton.Visibility = Visibility.Hidden;
                 this.EditCardsetButton.Visibility = Visibility.Hidden;
                 this.AddCardsetToCollectionButton.Visibility = Visibility.Hidden;
+                Log.Information("UI updated: user is not logged.");
             }
         }
 
@@ -70,6 +74,8 @@ namespace WordSnapWPFApp.Presentation.Pages
                 this.isCardsetInSavedCollection = await this.cardsetService.IsCardsetInUserSavedLibraryAsync(userId, this.cardsetId);
                 this.AddCardsetToCollectionButton.Content = this.isCardsetInSavedCollection ? "Видалити з колекції" : "Додати до колекції";
             }
+
+            Log.Information("Cards initialized.");
         }
 
         private void CardButton_Click(object sender, RoutedEventArgs e)
@@ -79,12 +85,17 @@ namespace WordSnapWPFApp.Presentation.Pages
                 this.selectedCard = card;
                 this.CardInfo.Text = card.WordEn;
                 this.CardComment.Text = string.Empty;
+
+                Log.Information("Card selected.");
             }
         }
 
         private void CardInfo_Click(object sender, MouseButtonEventArgs e)
         {
-            if (this.selectedCard == null) return;
+            if (this.selectedCard == null)
+            {
+                Log.Information("Card is not selected.");
+            }
 
             var shrinkAnimation = new DoubleAnimation
             {
@@ -123,6 +134,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             };
 
             CardFlipTransform.BeginAnimation(ScaleTransform.ScaleXProperty, shrinkAnimation);
+            Log.Information("Card rotated.");
         }
 
         private async void TestButton_Click(object sender, RoutedEventArgs e)
@@ -137,21 +149,25 @@ namespace WordSnapWPFApp.Presentation.Pages
                     {
                         await this.cardsetService.GetUserscardsetAsync(user.Id, this.cardsetId);
                         this.NavigationService.Navigate(new TestPage(this.cardsetId));
+                        Log.Information("Redirecting to TestPage..");
                     }
                     catch (InvalidOperationException ex)
                     {
                         MessageBox.Show(ex.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        Log.Error("Error occurred in TestButton_Click method.", ex);
                         return;
                     }
                 }
                 else
                 {
                     this.NavigationService.Navigate(new TestPage(this.cardsetId));
+                    Log.Debug("Redirecting to TestPage.");
                 }
             }
             else
             {
                 this.NavigationService.Navigate(new LoginPage());
+                Log.Debug("Redirecting to LoginPage.");
             }
         }
 
@@ -164,14 +180,17 @@ namespace WordSnapWPFApp.Presentation.Pages
                 if (user.Id != cardset.UserRef)
                 {
                     MessageBox.Show("Ви не є власником цієї колекції.");
+                    Log.Warning($"User {user.Id} is not the owner of collection {cardset.Id}.");
                     return;
                 }
 
                 this.NavigationService.Navigate(new EditOrCreateCardsetPage(this.cardsetId));
+                Log.Debug("Redirecting to EditOrCreateCardsetPage.");
             }
             else
             {
                 this.NavigationService.Navigate(new LoginPage());
+                Log.Debug("Redirecting to LoginPage.");
             }
         }
 
@@ -185,24 +204,28 @@ namespace WordSnapWPFApp.Presentation.Pages
                     if (this.isCardsetInSavedCollection)
                     {
                         await this.cardsetService.DeleteUserscardsetAsync(userId, this.cardsetId);
+                        Log.Information("Usercardset deleted.");
                         this.isCardsetInSavedCollection = false;
                         this.AddCardsetToCollectionButton.Content = "Додати до колекції";
                     }
                     else
                     {
                         await this.cardsetService.AddCardsetToSavedLibraryAsync(userId, this.cardsetId);
+                        Log.Information("Cardset saved to library.");
                         this.isCardsetInSavedCollection = true;
                         this.AddCardsetToCollectionButton.Content = "Видалити з колекції";
                     }
                 }
                 catch (InvalidOperationException ex)
                 {
+                    Log.Error("Error occurred in AddCardsetToCollectionButton_Click method.", ex);
                     MessageBox.Show(ex.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else
             {
                 this.NavigationService.Navigate(new LoginPage());
+                Log.Debug("Redirecting to LoginPage.");
             }
         }
 
@@ -225,23 +248,28 @@ namespace WordSnapWPFApp.Presentation.Pages
                     {
                         int userId = user.Id;
                         await this.cardsetService.DeleteCardsetAsync(userId, this.cardsetId);
+                        Log.Information("Cardset deleted.");
                         this.NavigationService.Navigate(new OwnedCardsetLibraryPage());
+                        Log.Debug("Redirecting to OwnedCardsetLibraryPage.");
                     }
                 }
                 catch (InvalidOperationException ex)
                 {
                     MessageBox.Show(ex.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Log.Error("Error occurred in DeleteCardsetButton_Click method.", ex);
                 }
             }
             else
             {
                 MessageBox.Show("Ви не є власником цієї колекції.");
+                Log.Information($"User {user.Id} is not the owner of collection {cardset.Id}.");
             }
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.GoBack();
+            Log.Debug("Redirecting to GoBack.");
         }
     }
 }

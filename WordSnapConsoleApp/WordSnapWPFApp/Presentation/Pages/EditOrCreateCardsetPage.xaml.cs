@@ -4,6 +4,7 @@
 
 namespace WordSnapWPFApp.Presentation.Pages
 {
+    using Serilog;
     using System.Collections.ObjectModel;
     using System.Windows;
     using System.Windows.Controls;
@@ -34,6 +35,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             this.observedCards = new ObservableCollection<Card>();
             this.CardsListBox.ItemsSource = this.observedCards;
             this.InitializePage();
+            Log.Information("EditOrCreateCardsetPage initialized.");
         }
 
         private async void InitializePage()
@@ -64,6 +66,8 @@ namespace WordSnapWPFApp.Presentation.Pages
                     Cards = new List<Card>(),
                 };
                 await this.cardsetService.CreateCardsetAsync(this.currentCardset);
+                Log.Information("Cardset created.");
+
                 this.cardsetId = this.currentCardset.Id;
 
                 this.CardsetName.Text = this.currentCardset.Name;
@@ -72,6 +76,7 @@ namespace WordSnapWPFApp.Presentation.Pages
 
             this.CardsetName.LostFocus += this.CardsetName_LostFocus;
             this.isInitializing = false;
+            Log.Information("Page initialized.");
         }
 
         private async void CardsetName_LostFocus(object sender, RoutedEventArgs e)
@@ -85,6 +90,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             var validationResult = this.validationService.ValidateEnglishText(this.CardsetName.Text, true);
             if (!validationResult.IsValid)
             {
+                Log.Warning("Validation result is not valid.");
                 MessageBox.Show(validationResult.ErrorMessage, "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 this.CardsetName.Text = this.currentCardset.Name;
                 return;
@@ -92,6 +98,7 @@ namespace WordSnapWPFApp.Presentation.Pages
 
             this.currentCardset.Name = this.CardsetName.Text;
             await this.cardsetService.UpdateCardsetAsync(this.currentCardset);
+            Log.Information("Cardset updated.");
         }
 
         private async void CardsetToggle_Checked(object sender, RoutedEventArgs e)
@@ -100,6 +107,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             {
                 this.currentCardset.IsPublic = !this.CardsetToggle.IsChecked;
                 await this.cardsetService.UpdateCardsetAsync(this.currentCardset);
+                Log.Information("Cardset updated.");
             }
         }
 
@@ -142,12 +150,14 @@ namespace WordSnapWPFApp.Presentation.Pages
             var ukrainianValidation = this.validationService.ValidateUkrainianText(this.WordUaTextBox.Text);
             if (!englishValidation.IsValid)
             {
+                Log.Warning("Validation result is not valid.");
                 MessageBox.Show(englishValidation.ErrorMessage, "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             if (!ukrainianValidation.IsValid)
             {
+                Log.Warning("Validation result is not valid.");
                 MessageBox.Show(ukrainianValidation.ErrorMessage, "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
@@ -162,6 +172,7 @@ namespace WordSnapWPFApp.Presentation.Pages
                 };
 
                 await this.cardsetService.AddCardToCardsetAsync(newCard, this.cardsetId.Value);
+                Log.Information("Card added to cardset.");
 
                 this.observedCards.Add(newCard);
             }
@@ -192,6 +203,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             if (user == null)
             {
                 this.NavigationService.Navigate(new LoginPage());
+                Log.Debug("Redirecting to LoginPage.");
                 return;
             }
 
@@ -214,6 +226,7 @@ namespace WordSnapWPFApp.Presentation.Pages
             if (user == null)
             {
                 this.NavigationService.Navigate(new LoginPage());
+                Log.Debug("Redirecting to LoginPage.");
                 return;
             }
 
@@ -257,9 +270,12 @@ namespace WordSnapWPFApp.Presentation.Pages
                         this.WordUaTextBox.Text = string.Empty;
                         this.CommentTextBox.Text = string.Empty;
                     }
+
+                    Log.Information("Card deleted.");
                 }
                 catch (Exception ex)
                 {
+                    Log.Error("Error occurred in TryDeleteCardAsync method.", ex);
                     MessageBox.Show(ex.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
